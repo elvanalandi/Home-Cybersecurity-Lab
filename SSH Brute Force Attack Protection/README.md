@@ -36,3 +36,54 @@ The attack will start from the attacker's IP address (<strong>192.168.199.129</s
 The Wazuh Dashboard can also be accessed from the host machine's IP address.
 
 ![Network Diagram](images/network-diagram.png)
+
+## Documentation
+### Environment
+The first thing I did was log in to the Wazuh Dashboard using a web browser.
+
+![Login Wazuh](images/login-wazuh.png)
+
+After logging into the dashboard, you will see an overview of the devices connected to Wazuh. To access the **Endpoint Summary** and see the device that will be the victim in this simulation, click the menu options in the top left corner of the page and scroll down to **Server Management**, you will see the Endpoints Summary.
+
+![Endpoints Summary Option](images/endpoints-summary-menu.png)
+
+There are two devices linked to my Wazuh instance. As I mentioned before, we will use the Ubuntu 24.04 server as the victim. 
+
+![Endpoints List](images/endpoints-list.png)
+
+Next, I examined the **ubuntu24** endpoint traffic in more detail. We could see some events occurring and the device's compliance with standards.
+
+![ubuntu24](images/ubuntu24.png)
+
+Now, let's dive deeper into the events recorded by Wazuh. Go to the menu again, navigate to **Threat Hunting**, and select **Events**. Here, we can see the events in more detail. Expanding the dropdown will show the details of the selected event. There is also a search bar that we can use to filter the events for specific ones we want to investigate.
+
+![Normal Events](images/normal-events.png)
+
+After exploring the Wazuh environment, I will demonstrate how to set up port forwarding rules in VirtualBox.
+First, go to VirtualBox **Settings**, choose **Network**, expand the **Advanced** dropdown, and click the **Port Forwarding** button. Click the plus button on the right side of the pop-up box, then fill in the Name, Protocol, Host Port, and Guest Port as shown in the image below or customize them to your preference. Since I wanted to simulate an SSH Brute Force attack, I configured the port to SSH port (22).
+
+![SSH Port Forwarding](images/port-forwarding.png)
+
+Then, I tested whether the server was working by using the ssh command from the attacker machine.
+
+![SSH Test](images/SSH-test.png)
+
+### Simulation
+Now, let's attack the victim.
+I used Hydra as a brute force tool and a common wordlist, rockyou.txt.
+
+![Hydra](images/hydra.png)
+
+Let the tool run. Subsequently, we can identify that the attack is being detected by Wazuh in the **Events** Dashboard. In the image below, a rule description states **"sshd: authentication failed"**, indicating that the attack is working but unsuccessful.
+
+![Brute Force Events](images/brute-force-events.png)
+
+To protect the server from the attack, edit the ossec configuration and apply the **firewall-drop** command to the SSHD brute force rule ID (5763). Editing the configuration can be accessed by navigating to **Settings** under **Server Management**, then selecting **Edit Configuration** on the top left. Write down the configuration as shown in the image below.
+
+![Firewall Drop Rule](images/firewall-drop-rule.png)
+
+Then, try the attack again. It will say "host blocked by firewall-drop." Expand the event to get more information. We can see the output and confirm that it is a Brute Force attack.
+
+![Host Blocked](images/host-blocked.png)
+
+![Event Detail](images/event-detail.png)
