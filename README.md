@@ -1,8 +1,8 @@
-## Wazuh Projects
+## Home Lab Projects
 
-Wazuh is a SIEM tool that I used to protect my home network.
+This is my home lab projects that I have applied to protect my home network.
 
-These projects provide a walkthrough on how to monitor and defend your system using Wazuh against specific attacks.
+These projects provide a walkthrough on how to monitor and defend the system from cyber attacks.
 
 List of projects:
 <ul>
