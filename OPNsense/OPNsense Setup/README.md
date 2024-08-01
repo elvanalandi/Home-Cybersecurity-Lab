@@ -3,7 +3,7 @@ This project provides a step-by-step guide on installing and deploying OPNsense,
 
 ## Documentation
 To download the OPNsense firewall, first access the OPNsense official website. <br />
-You can click on this url to get into the website [https://opnsense.org/](https://opnsense.org/)
+You can click on this url to get into the website [https://opnsense.org/](https://opnsense.org/){:target="_blank" rel="noopener"}
 Then, follow these steps to install and deploy OPNsense:
 1. Navigate to **Download** section on the navigation bar (You can look at the system requirements page on **Users->Get started** to make sure your computer is compatible)<br />
   ![Network Diagram](images/download-page.png)
