@@ -8,7 +8,8 @@ Then, follow these steps to install and deploy OPNsense:
 1. Navigate to **Download** section on the navigation bar (You can look at the system requirements page on **Users->Get started** to make sure your computer is compatible)<br />
   ![Network Diagram](images/download-page.png)
 2. While waiting for the download to complete, you can visit the [bzip2 website](https://gnuwin32.sourceforge.net/packages/bzip2.htm) to download bzip2, which is needed to uncompress the OPNsense file. To download bzip2, click the **Setup** link next to the **Complete  package** description, highlighted in purple.<br />
-  Alternatively, you can use WinRAR to uncompress the file without needing bzip2. If you are using WinRAR application, you can skip to step 8.<br />
+  Alternatively, you can use WinRAR to uncompress the file without needing bzip2.<br />
+  If you are using WinRAR application, you can skip to step 8.<br />
   Please note that this bzip2 can only be used in the Windows platform.<br />
   ![Bzip2](images/bzip2.png)
 3. It’s good practice to compare the file hash with the hash provided on the official website to ensure the file hasn’t been corrupted or tampered with. On Windows, you can use the `Get-FileHash` command to generate the file hash. After obtaining the hash value, compare it manually with the hash listed on the website.<br />
@@ -27,8 +28,37 @@ Then, follow these steps to install and deploy OPNsense:
 9. Next, create the OPNsense virtual machine using the ISO image. I am using Oracle VirtualBox for this installation, but you can use any virtual machine application of your choice.<br />
    After clicking the **Create** button, specify the name, folder, and path to the ISO image. Set the VM type to **BSD** and select **FreeBSD (64-bit)** as the version, as OPNsense is based on FreeBSD.
    ![VM Settings](images/vm-settings.png)
-10. 
-
-   
-
-
+10. Allocate a minimum of 2048 MB of memory and 2 CPUs to ensure optimal performance.
+   ![Hardware Specification](images/hardware-specs.png)
+11. Create a Virtual Hard Disk with a minimum size of 8 GB.
+   ![Virtual Hard Disk](images/vharddisk.png)
+12. Review the settings and click the **Finish** button.
+   ![VM Summary](images/vm-summary.png)
+13. Before starting the OPNsense virtual machine, configure the network settings. I am using two types of networks: **NAT** and **Host-only Adapter**. This setup allows the firewall to capture traffic from both the internet and the internal network, including the host.<br /><br />
+    In VirtualBox, access the network settings by going to **Settings** and then the **Network** tab. Ensure **Enable Network Adapter** is checked. For the first adapter, select **NAT**, and for the second adapter, choose **Host-only Adapter**.
+   ![NAT Network Settings](images/NAT.png)
+   ![Host Network Settings](images/host.png)
+14. Start the OPNsense virtual machine and wait for it to fully boot up. Once it’s ready, provide the login credentials:<br />
+   **login: installer**<br />
+   **Password: opnsense**<br />
+   ![VM Login](images/vm-login.png)
+15. Select **Continue with default keymap**, then choose **Install (UFS)** and select **ada0** as the hard disk for the file system. <br />
+    Finally, reset the contents of the disk. <br />
+   ![Keymap Selection](images/keymap.png)
+   ![UFS](images/ufs.png)
+   ![Hard Disk](images/harddisk.png)
+   ![Reset Disk](images/reset-disk.png)
+16. Wait for the installation to complete. You can then either change the root password or finish the installation. For enhanced security, it is recommended to change the default root password.
+   ![Installing Process](images/installing.png)
+   ![Complete Installation Prompt](images/complete-installation.png)
+17. While the virtual machine is rebooting, remove the ISO disk from the virtual drive by going to **Devices** -> **Optical Drives** -> **Remove disk from virtual drive**.<br />
+   In the image, this option is highlighted in grey because the disk was removed before taking the screenshot.
+   ![Rempve Disk from Virtual Drive](images/remove-disk.png)
+18. Then, log in with the root account. You will see various options for configuring the firewall.<br /><br />
+   First, select option 1 to assign the interfaces. Choose No for LAGGs (Link Aggregation Groups, similar to EtherChannel in Cisco for aggregating network links) and VLANs configuration.<br />
+   ![Network Interfaces Settings 1](images/net-interfaces-1.png) <br />
+   For the WAN and LAN interfaces, assign **em0** to the WAN interface and **em1** to the LAN interface. Press Enter for the Optional interface to continue without providing additional input.<br />
+   ![Network Interfaces Settings 2](images/net-interfaces-2.png)
+   ![Network Interfaces Settings 3](images/net-interfaces-3.png) <br />
+   Then, proceed to set up the interfaces.<br />
+   ![Network Interfaces Settings 4](images/net-interfaces-4.png)
