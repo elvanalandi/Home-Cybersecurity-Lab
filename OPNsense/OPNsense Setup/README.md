@@ -5,7 +5,7 @@ This project provides a step-by-step guide on installing and deploying OPNsense,
 To download the OPNsense firewall, first access the OPNsense official website. <br />
 You can click on this url to get into the website [https://opnsense.org/](https://opnsense.org/)
 Then, follow these steps to install and deploy OPNsense:
-1. Navigate to **Download** section on the navigation bar (You can look at the system requirements page on **Users->Get started** to make sure your computer is compatible)<br />
+1. Navigate to **Download** section on the navigation bar (You can look at the system requirements page on **Users -> Get started** to make sure your computer is compatible)<br />
   ![Network Diagram](images/download-page.png)
 2. While waiting for the download to complete, you can visit the [bzip2 website](https://gnuwin32.sourceforge.net/packages/bzip2.htm) to download bzip2, which is needed to uncompress the OPNsense file. To download bzip2, click the **Setup** link next to the **Complete  package** description, highlighted in purple.<br />
   Alternatively, you can use WinRAR to uncompress the file without needing bzip2.<br />
@@ -55,10 +55,26 @@ Then, follow these steps to install and deploy OPNsense:
    In the image, this option is highlighted in grey because the disk was removed before taking the screenshot.
    ![Rempve Disk from Virtual Drive](images/remove-disk.png)
 18. Then, log in with the root account. You will see various options for configuring the firewall.<br /><br />
-   First, select option 1 to assign the interfaces. Choose No for LAGGs (Link Aggregation Groups, similar to EtherChannel in Cisco for aggregating network links) and VLANs configuration.<br />
+   First, select option 1 to assign the interfaces. Choose **No/n** for LAGGs (Link Aggregation Groups, similar to EtherChannel in Cisco for aggregating network links) and VLANs configuration.<br />
    ![Network Interfaces Settings 1](images/net-interfaces-1.png) <br />
    For the WAN and LAN interfaces, assign **em0** to the WAN interface and **em1** to the LAN interface. Press Enter for the Optional interface to continue without providing additional input.<br />
    ![Network Interfaces Settings 2](images/net-interfaces-2.png)
    ![Network Interfaces Settings 3](images/net-interfaces-3.png) <br />
    Then, proceed to set up the interfaces.<br />
    ![Network Interfaces Settings 4](images/net-interfaces-4.png)
+19. After assigning the interfaces, assign IP addresses to the LAN interface by choosing option 2.
+   ![Set Interface IP Address Mode](images/set-ip.png) <br />
+    I am using a static LAN IP address to ensure consistent access to OPNsense without changes over time.<br />
+   The IP address used is within my subnet, but you should select an IP address that fits your own network.<br />
+   ![Set IPv4 Address](images/ipv4-addr.png)<br />
+   We are not configuring the WAN interface because the firewall will be used within a home network, and IPv6 is not in use.<br />
+   The Web GUI protocol does not affect firewall access, even if you use HTTPS, it will default to HTTP due to the certificate not being issued by a certificate authority.<br />
+   ![Set IPv6 Address and Protocol](images/ipv6-proto.png)<br />
+20. If everything has been set, we can access the OPNsense GUI in the web browser and type the static IP address that already set.<br />
+   Then, we can use the root account to login to the website.
+   ![OPNsense Login](images/login-page.png)<br />
+   The first step is to check for updates by navigating to **Firmware -> Updates**. Next, go to the **Plugins** section, located next to **Updates**, to download the VirtualBox plugins, which include the Guest Additions extension to ensure OPNsense runs smoothly.
+   ![OPNsense Update](images/update-page.png)<br />
+   ![OPNsense Download Plugins](images/download-plugins.png)<br />
+21. Finally, the firewall will be up and running when you return to the **Lobby -> Dashboard**. You can add widgets to suit your preferences.
+   ![OPNsense Dashboard](images/dashboard.png)
