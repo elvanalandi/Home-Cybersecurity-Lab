@@ -73,7 +73,7 @@ Then, follow these steps to install and deploy OPNsense:
 20. If everything has been set, we can access the OPNsense GUI in the web browser and type the static IP address that already set.<br />
    Then, we can use the root account to login to the website.
    ![OPNsense Login](images/login-page.png)<br />
-   The first step is to check for updates by navigating to **Firmware -> Updates**. Next, go to the **Plugins** section, located next to **Updates**, to download the VirtualBox plugins, which include the Guest Additions extension to ensure OPNsense runs smoothly.
+   The first step is to check for updates by navigating to **Firmware -> Updates**. Next, go to the **Plugins** section, located next to **Updates**, to download the VirtualBox plugins(**os-virtualbox**), which include the Guest Additions extension to ensure OPNsense runs smoothly.
    ![OPNsense Update](images/update-page.png)<br />
    ![OPNsense Download Plugins](images/download-plugins.png)<br />
 21. Finally, the firewall will be up and running when you return to the **Lobby -> Dashboard**. You can add widgets to suit your preferences.
