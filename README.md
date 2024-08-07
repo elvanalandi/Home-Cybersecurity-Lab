@@ -17,4 +17,15 @@ List of projects:
     <ul>
       <li><strong><a href="/Wazuh/Wazuh SSH Brute Force Attack Protection">Wazuh SSH Brute Force Attack Protection</a></strong>: Configuring Wazuh to detect and mitigate SSH brute force attacks using a blocking mechanism</li>
     </ul>
+  </li>
+  <li>
+    <strong>Incident Response Platform Projects:</strong>
+    <br />These projects involve setting up and integrating The Hive, Cortex, and MISP:<br />
+    <strong>The Hive</strong> is an incident response platform that facilitates collaboration and automation for investigation management.<br />
+    <strong>Cortex</strong> extends The Hive by analyzing security data and providing additional context to support incident investigations.<br />
+    <strong>MISP (Malware Information Sharing Platform)</strong> is a threat intelligence platform designed to facilitate the sharing of threat information.<br />
+    <ul>
+      <li><strong><a href="/TheHive-Cortex-MISP/TheHive-Cortex-MISP Setup and Integration">TheHive-Cortex-MISP Installation and Integration</a></strong>: Installing and integrating TheHive, Cortex, and MISP to build a robust incident response platform.</li>
+    </ul>
+  </li>
 </ul>
