@@ -23,7 +23,7 @@ Once logged in, create a new password to enhance the security of MISP.
 ![MISP Change Password](images/misp-newpass.png)  
 After changing the password, you will be navigated to the "My Profile" section, where you can view the admin information.  
 ![MISP Profile](images/misp-profile.png)  
-Now, set up the organisation. This information is essential for establishing the connection between MISP and TheHive. To do this, access the "Add Organisation" section from the **Administration** menu in the navigation bar and select **Add Organisations**.  
+Now, set up the organisation. To do this, access the "Add Organisation" section from the **Administration** menu in the navigation bar and select **Add Organisations**.  
 ![MISP Add Organisation](images/misp-addorg.png)  
 Then, add the organisation details according to your preference. The **Organisation Identifier** and **UUID** are mandatory. For the UUID, you need to click the **Generate UUID** button first to generate a unique identifier.  
 ![MISP Organisation](images/misp-org.png)  
