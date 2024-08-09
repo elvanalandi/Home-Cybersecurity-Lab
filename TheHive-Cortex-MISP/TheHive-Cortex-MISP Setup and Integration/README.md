@@ -97,7 +97,7 @@ misp {
 }  
 ```
 ![TheHive Application Config](images/thehive-app.png)  
-Also, configure TheHive with the Cortex port, set the Cortex API keys, and specify the path for the **application.conf** file. I am using port **9003** since port **9002** is already in use.  
+Also, configure TheHive with the Cortex port, set the Cortex API keys, and specify the path for the **application.conf** file in the **docker-compose** file. I am using port **9003** since port **9002** is already in use.  
 ![Cortex Connector Configuration](images/cortex-conf.png)  
 To apply the configuration changes, you can either turn down the containers and start them again, or use the `docker-compose restart`command to restart them directly.  
 ![Stop Containers](images/stop-containers.png) ![Start Containers](images/start-containers.png)  
