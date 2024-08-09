@@ -46,5 +46,30 @@ The middle characters of the key will be censored, as shown in the image below.
 After setting up the authentication key, the next step is to set up Cortex.  
 
 ### Cortex
-You can access Cortex through port **9001** on **localhost**. When you first visit the Cortex page, it will look like the image below.  
+You can access Cortex through port **9001** on **localhost**. When you first visit the Cortex page, it will look like the image below. After clicking the "Update Database" button, enter the administrator account login credentials and name.  
 ![Cortex First Page](images/cortex-first.png)  
+![Cortex Login Credentials](images/cortex-login.png)  
+Next, you'll see the users page displaying the details of the users that have been created.  
+![Cortex Users](images/cortex-users.png)  
+For now, let’s skip the user settings. Go to the "Organisation" menu on the top bar to add a new organization and click the **Add organisation** button to create a new organisation. Then, enter the organisation’s name and description.  
+![Cortex Organisation](images/cortex-org.png)  
+![Cortex Add Organisation](images/cortex-addorg.png)  
+The result of adding the organization will look like the image below.  
+![Cortex New Organisation](images/cortex-neworg.png)  
+Now, go back to the Users Dashboard to add a new user. It’s safer to create a new user instead of using the admin account, which has full permissions and could pose a risk.  
+![Cortex Users](images/cortex-users.png)  
+Click **Add user** and fill in the required details. Be careful when selecting the **Roles** for the user, as different roles come with varying levels of access and can impact system security.  
+![Cortex Add User](images/cortex-adduser.png)  
+![Cortex New User](images/cortex-newuser.png)  
+Since the new user doesn’t have a password by default, set one by clicking the **New Password** button. After setting the password, press **Enter** on your keyboard to save it.  
+![Cortex New Password](images/cortex-newpass.png)  
+Finally, create an API key for the new user by clicking **Create API Key**. This key is essential for connecting to TheHive. Click on **Reveal** to view the API key, and make sure to save it somewhere secure.  
+![Cortex Create API Key](images/cortex-addapikey.png)  
+![Cortex API Key](images/cortex-apikey.png)  
+
+### TheHive Integration
+The last step is to integrate everything with TheHive.  
+TheHive can be accessed on port **9000**. The default login credentials are:  
+**Login**: admin  
+**Password**: secret  
+![TheHive Login Page](images/thehive-login.png)  
