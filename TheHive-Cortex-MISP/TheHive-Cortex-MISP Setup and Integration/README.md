@@ -73,3 +73,31 @@ TheHive can be accessed on port **9000**. The default login credentials are:
 **Login**: admin  
 **Password**: secret  
 ![TheHive Login Page](images/thehive-login.png)  
+Once logged in, you'll notice the Cortex and MISP logos in the bottom left corner. They will either have a red border (indicating a connection issue) or a grey border (indicating no connection). Therefore, we need to setup the connection first.  
+![TheHive Dashboard Page](images/thehive-dashboard.png)  
+Create a conf folder inside the thehive directory within the container's folder. This will be used to store connector configuration files for TheHive. Then, make a file named "application.conf" under conf folder.  
+![TheHive Application Config Directory](images/thehive-confdir.png)  
+Copy and paste the following code into the configuration file, and be sure to replace <MISP API Key> with your own <MISP API Key> and <Organisation Name> with the name of your organization:  
+```play.module.enabled += org.thp.thehive.connector.misp.MispModule
+misp {
+	interval: 1 hour
+	servers: [
+		{
+			name = "MISP"
+			url = "https://misp.local"
+			auth {
+				type = key
+				key = "<MISP API Key>"
+			}
+			tags = ["tag1", "tag2", "tag3"]
+			caseTemplate = "misp"
+			includedTheHiveOrganisations = ["<Organisation Name>"]
+		}
+	]
+}  
+```
+![TheHive Application Config](images/thehive-app.png)  
+Also, configure TheHive with the Cortex port, set the Cortex API keys, and specify the path for the **application.conf** file. I am using port **9003** since port **9002** is already in use.  
+![Cortex Connector Configuration](images/cortex-conf.png)  
+To apply the configuration changes, you can either turn down the containers and start them again, or use the `docker-compose restart`command to restart them directly.  
+![Stop Containers](images/stop-containers.png) ![Start Containers](images/start-containers.png)  
