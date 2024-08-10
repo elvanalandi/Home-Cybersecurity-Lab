@@ -101,3 +101,33 @@ Also, configure TheHive with the Cortex port, set the Cortex API keys, and speci
 ![Cortex Connector Configuration](images/cortex-conf.png)  
 To apply the configuration changes, you can either turn down the containers and start them again, or use the `docker-compose restart`command to restart them directly.  
 ![Stop Containers](images/stop-containers.png) ![Start Containers](images/start-containers.png)  
+ Next, go to **Platform Management**in the sidebar. You'll see that the logos' borders on the bottom left change color (Cortex turns yellow and MISP turns red). After that, go to the Cortex dashboard from the top navigation bar.  
+![TheHive Platform Management](images/thehive-platform.png)  
+Click on the server name (in my case, **cortex0**) and enter the Cortex API Key that you saved earlier. Make sure to disable **Check Certificate Authority** because we are using a self-signed SSL certificate. To apply the settings, first click **Test server connection**, then click **Update**.  
+![TheHive Cortex Connection Settings](images/thehive-cortex.png)  
+The Cortex logo border color should be green, indicating that the connection has been successfully established.  
+![TheHive Cortex Connection Established](images/thehive-cortexconn.png)  
+Now, go to the MISP dashboard from the top navigation bar. Click on the server name, enter the MISP server URL (**https://misp.local**), the MISP API Key, and disable the **Check Certificate Authority**option. Then, test the connection and click **Update**.  
+![TheHive MISP Connection Established](images/thehive-mispconn.png)  
+They are should be green by now.  
+![TheHive Connection Result](images/thehive-connresult.png)  
+For TheHive Management, you need to create a new organisation and a new user. To do this, go to the **Organisation Management** dashboard, indicated by a house logo on the top left. Click on the **+** button to add a new organisation. Enter the name and description for the new organisation.  
+![TheHive Add Organisation](images/thehive-addorg.png)  
+![TheHive New Organisation](images/thehive-neworg.png)  
+User Management, indicated by a people logo under the Organisation logo, is where you can add a new user. Click on the **+** button to create a new user. Enter the login email and the user's name, and make sure to assign the user to the newly created organisation. I set the user's role as **org-admin**.  
+![TheHive Add User](images/thehive-adduser.png)  
+![TheHive Add User Role](images/thehive-adduserrole.png)  
+![TheHive New User](images/thehive-newuser.png)  
+The table below is the permission based on the user's role. For more detailed information, see the documentation of TheHive User Guide [here](https://docs.strangebee.com/cortex/user-guides/roles/).  
+![TheHive Role Permission](images/thehive-role.png)  
+The default password is not set, so you'll need to create one using the **Preview** link, which you can access by hovering your mouse over the right side of the user name. Under the **Password** section, there should be a **Create Password** link. In the image below, this link does not appear because a password has already been set.  
+![TheHive Password](images/thehive-pass.png)  
+If everything is set up, it's ready to be used.  
+The two images below illustrate the dashboard differences between a standard user and an admin. To see these differences, log out of the admin account and log in as a user through the logout button.  
+![TheHive Admin Dashboard](images/thehive-admin.png) ![TheHive User Dashboard](images/thehive-userdashboard.png)  
+
+### References
+[1] https://docs.strangebee.com/thehive/installation/docker/docker/  
+[2] https://github.com/ls111-cybersec/thehive-cortex-misp-docker-compose-lab11update/blob/main/docker-compose.yml  
+[3] https://medium.com/@hasithaupekshitha97/simplifying-security-operations-installing-wazuh-the-hive-cortex-and-misp-using-docker-01fc4229eb73  
+[4] https://docs.strangebee.com/cortex/user-guides/roles/  
