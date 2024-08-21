@@ -229,6 +229,12 @@ ${WAZUH_PATH}/${WPYTHON_BIN} ${PYTHON_SCRIPT} $@
 ```
 <kbd>![Copy Bash Script](images/copy-bash.png)</kbd>  
 4. Set the file permissions and ownership to ensure they have the proper access to run. For Wazuh 4.3.0, the ownership should be `root:wazuh`. For another version, use `root:ossec`.  
+```
+sudo chmod 755 /var/ossec/integrations/custom-w2thive.py
+sudo chmod 755 /var/ossec/integrations/custom-w2thive
+sudo chown root:wazuh /var/ossec/integrations/custom-w2thive.py
+sudo chown root:wazuh /var/ossec/integrations/custom-w2thive
+```
 <kbd>![Change Permissions](images/permissions.png)</kbd>  
 5. Create a user with "analyst" privileges in TheHive so Wazuh can access the TheHive API.  
 <kbd>![Add API User](images/api-user.png)</kbd>  
