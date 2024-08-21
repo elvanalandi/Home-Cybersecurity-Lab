@@ -16,6 +16,7 @@ List of projects:
     <br />A series of projects utilizing Wazuh, a powerful open source SIEM tool, to monitor and secure various aspects of my home network.<br />
     <ul>
       <li><strong><a href="/Wazuh/Wazuh SSH Brute Force Attack Protection">Wazuh SSH Brute Force Attack Protection</a></strong>: Configuring Wazuh to detect and mitigate SSH brute force attacks using a blocking mechanism</li>
+      <li><strong><a href="/Wazuh/Wazuh Integration with TheHive">Wazuh Integration with TheHive</a></strong>: Configuring Wazuh to connect with TheHive</li>
     </ul>
   </li>
   <li>
