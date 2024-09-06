@@ -29,4 +29,11 @@ List of projects:
       <li><strong><a href="/TheHive-Cortex-MISP/TheHive-Cortex-MISP Setup and Integration">TheHive-Cortex-MISP Installation and Integration</a></strong>: Installing and integrating TheHive, Cortex, and MISP to build a robust incident response platform.</li>
     </ul>
   </li>
+  <li>
+    <strong>Splink Projects:</strong>
+    <br />These projects involve cyber attacks analysis using Splunk Enterprise:<br />
+    <ul>
+      <li><strong><a href="/Splunk/DNS Spoofing Analysis">DNS Spoofing Analysis</a></strong>: Analyse DNS Spoofing Attack using Splunk.</li>
+    </ul>
+  </li>
 </ul>
