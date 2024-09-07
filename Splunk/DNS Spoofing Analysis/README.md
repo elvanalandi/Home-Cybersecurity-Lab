@@ -29,3 +29,22 @@ This project demonstrate how to analyse DNS spoofing attack data using Splunk. A
    ![New Fields](images/new-fields.png)  
 10. Save the extracted fields to filter the data more effectively.  
    ![Save Extracted Fields](images/extracted-fields.png)  
+11. Once the field extraction is complete, navigate to **Explore the fields I just created in Search**.  
+   ![Explore Data](images/explore.png)
+12. We begin the analysis. The events are now grouped by protocol, which allows for more precise filtering.  
+   ![Protocol](images/protocol.png)
+13. Next, I examined the IP addresses involved in the network activity. There are only two IP addresses that are communicating (**192.168.199.132** and **192.168.199.2**).  
+   ![IP Addresses](images/ip.png)  
+14. To understand the scope of the attack, I looked at all Fully Qualified Domain Names (FQDN) involved. The domain information helps identify the target of the DNS spoofing.  
+   ![Domain Page 1](images/domain-1.png)  
+   On page 1, we see numerous requests to Google, but these requests are resolved to IP addresses outside the **192.168.199.0/24** range (the IP address range used in the [attack simulation](https://github.com/elvanalandi/Cyber-Attack-Simulations/tree/main/DNS%20Spoofing)), meaning the DNS spoofing attack for google failed.  
+   ![Domain Page 2](images/domain-2.png)  
+   However, on page 2, there are DNS requests for **facebook.com** that resolve to **192.168.199.129**,an IP address within the attacker's network range (`AAAA facebook.com A 192.168.199.129`). This indicates that **facebook.com** was successfully spoofed.  
+15. To further investigate, I filtered the events specifically for the **facebook.com** domain.  
+   ![Filter Domain](images/filter-domain.png)  
+16. Upon analysing the event data, I noticed the following:
+    - The destination address for the **facebook.com** request is **192.168.199.2** (the gateway).
+    - The source address is **192.168.199.132** (the victim's machine).
+    - From the previous findings, **192.168.199.129** is the attacker, acting as a man-in-the-middle, intercepting and altering DNS responses.  
+This confirms the DNS spoofing attack, where **192.168.199.129** successfully redirected the victim's traffic for **facebook.com** to a fake site hosted by the attacker.  
+   ![DNS Spoofing Event](images/dns-spoof-event.png)  
