@@ -45,6 +45,7 @@ This project demonstrate how to analyse DNS spoofing attack data using Splunk. A
 16. Upon analysing the event data, I noticed the following:
     - The destination address for the **facebook.com** request is **192.168.199.2** (the gateway).
     - The source address is **192.168.199.132** (the victim's machine).
-    - From the previous findings, **192.168.199.129** is the attacker, acting as a man-in-the-middle, intercepting and altering DNS responses.  
+    - From the previous findings, **192.168.199.129** is the attacker, acting as a man-in-the-middle, intercepting and altering DNS responses.
+  
 This confirms the DNS spoofing attack, where **192.168.199.129** successfully redirected the victim's traffic for **facebook.com** to a fake site hosted by the attacker.  
    ![DNS Spoofing Event](images/dns-spoof-event.png)  
