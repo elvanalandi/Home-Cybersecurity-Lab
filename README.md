@@ -30,7 +30,7 @@ List of projects:
     </ul>
   </li>
   <li>
-    <strong>Splink Projects:</strong>
+    <strong>Splunk Projects:</strong>
     <br />These projects involve cyber attacks analysis using Splunk Enterprise:<br />
     <ul>
       <li><strong><a href="/Splunk/DNS Spoofing Analysis">DNS Spoofing Analysis</a></strong>: Analyse DNS Spoofing Attack using Splunk.</li>
