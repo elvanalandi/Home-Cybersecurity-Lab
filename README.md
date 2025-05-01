@@ -36,4 +36,11 @@ List of projects:
       <li><strong><a href="/Splunk/DNS Spoofing Analysis">DNS Spoofing Analysis</a></strong>: Analyse DNS Spoofing Attack using Splunk.</li>
     </ul>
   </li>
+  <li>
+    <strong>Suricata Projects:</strong>
+    <br />These projects involve installing and configuring Suricata:<br />
+    <ul>
+      <li><strong><a href="/Suricata/Suricata Installation and Configuration">Suricata Installation and Configuration</a></strong>: Configuring Suricata to start detecting malicious traffic.</li>
+    </ul>
+  </li>
 </ul>
