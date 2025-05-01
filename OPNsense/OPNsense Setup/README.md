@@ -6,7 +6,7 @@ To download the OPNsense firewall, first access the OPNsense official website. <
 You can click on this url to get into the website [https://opnsense.org/](https://opnsense.org/)
 Then, follow these steps to install and deploy OPNsense:
 1. Navigate to **Download** section on the navigation bar (You can look at the system requirements page on **Users -> Get started** to make sure your computer is compatible)<br />
-  ![Network Diagram](images/download-page.png)
+  ![Download Page](images/download-page.png)
 2. While waiting for the download to complete, you can visit the [bzip2 website](https://gnuwin32.sourceforge.net/packages/bzip2.htm) to download bzip2, which is needed to uncompress the OPNsense file. To download bzip2, click the **Setup** link next to the **Complete  package** description, highlighted in purple.<br />
   Alternatively, you can use WinRAR to uncompress the file without needing bzip2.<br />
   If you are using WinRAR application, you can skip to step 8.<br />
