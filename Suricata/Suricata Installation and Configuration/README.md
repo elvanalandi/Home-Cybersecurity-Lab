@@ -20,7 +20,7 @@ Then, follow these steps to install and deploy Suricata:
    ![PCAP Network Interface](images/pcap-net-interface.png)  
 5. Set the **community-id** value to **true** to correlate events across different security tools.  
    ![Community Flow ID](images/community-id.png)
-6. Run **suricata-update** to verify and update the configuration and rule files.
+6. Run **suricata-update** to verify and update the configuration and rule files.  
    ![Suricata Update](images/suricata-update.png)  
    
 
