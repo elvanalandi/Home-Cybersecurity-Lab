@@ -1,47 +1,49 @@
-## Home Lab Projects
-
-These home lab projects are designed to enhance the security of my home network. These projects include comprehensive walkthroughs on various techniques and tools used to monitor and protect against cyber threats.
-
-List of projects:
+## Home Cybersecurity Lab
+  
+This is a collection of projects I’ve built to learn how to protect my home network. I’ve tried out different tools like firewalls, security monitoring systems, and threat detection platforms. Each project includes easy-to-follow steps showing what I did and what I learned along the way.  
+  
+<h3>🔥 OPNsense Firewall</h3>  
+<p>Set up and configured OPNsense, a powerful open-source firewall, to protect my home network from unauthorized access and malicious traffic.</p>
 <ul>
   <li>
-    <strong>OPNsense Firewall:</strong>
-    <br />This project involves deploying and configuring OPNsense, an open-source firewall designed to enhance network security.<br />
-    <ul>
-      <li><strong><a href="/OPNsense/OPNsense Setup">OPNsense Firewall Installation</a></strong>: Configuring OPNsense Firewall to secure the network from unauthorized access and malicious traffic</li>
-    </ul>
-  </li>
-  <li>
-    <strong>Wazuh:</strong>
-    <br />A series of projects utilizing Wazuh, a powerful open source SIEM tool, to monitor and secure various aspects of my home network.<br />
-    <ul>
-      <li><strong><a href="/Wazuh/Wazuh SSH Brute Force Attack Protection">Wazuh SSH Brute Force Attack Protection</a></strong>: Configuring Wazuh to detect and mitigate SSH brute force attacks using a blocking mechanism</li>
-      <li><strong><a href="/Wazuh/Wazuh Integration with TheHive">Wazuh Integration with TheHive</a></strong>: Configuring Wazuh to connect with TheHive</li>
-      <li><strong><a href="/Wazuh/Wazuh Integration with Suricata">Wazuh Integration with Suricata</a></strong>: Configuring Wazuh to connect with Suricata IDS/IPS</li>
-    </ul>
-  </li>
-  <li>
-    <strong>Incident Response Platform:</strong>
-    <br />This project involves setting up and integrating The Hive, Cortex, and MISP:<br />
-    <strong>The Hive</strong> is an incident response platform that facilitates collaboration and automation for investigation management.<br />
-    <strong>Cortex</strong> extends The Hive by analyzing security data and providing additional context to support incident investigations.<br />
-    <strong>MISP (Malware Information Sharing Platform)</strong> is a threat intelligence platform designed to facilitate the sharing of threat information.<br />
-    <ul>
-      <li><strong><a href="/TheHive-Cortex-MISP/TheHive-Cortex-MISP Setup and Integration">TheHive-Cortex-MISP Installation and Integration</a></strong>: Installing and integrating TheHive, Cortex, and MISP to build a robust incident response platform.</li>
-    </ul>
-  </li>
-  <li>
-    <strong>Splunk:</strong>
-    <br />This project involves cyber attacks analysis using Splunk Enterprise:<br />
-    <ul>
-      <li><strong><a href="/Splunk/DNS Spoofing Analysis">DNS Spoofing Analysis</a></strong>: Analyse DNS Spoofing Attack using Splunk.</li>
-    </ul>
-  </li>
-  <li>
-    <strong>Suricata:</strong>
-    <br />This project involves installing and configuring Suricata:<br />
-    <ul>
-      <li><strong><a href="/Suricata/Suricata Installation and Configuration">Suricata Installation and Configuration</a></strong>: Configuring Suricata to start detecting malicious traffic.</li>
-    </ul>
+    <a href="/OPNsense/OPNsense%20Setup"><strong>OPNsense Firewall Installation</strong></a>: Step-by-step configuration to establish a secure perimeter.
   </li>
 </ul>
+  
+<h3>🛡️ Wazuh SIEM</h3>
+<p>A range of hands-on projects using Wazuh to monitor and protect systems in a home lab environment.</p>
+<ul>
+  <li>
+    <a href="/Wazuh/Wazuh%20SSH%20Brute%20Force%20Attack%20Protection"><strong>SSH Brute Force Attack Protection</strong></a>: Set up Wazuh to detect and automatically block brute force attempts.
+  </li>
+  <li>
+    <a href="/Wazuh/Wazuh%20Integration%20with%20TheHive"><strong>Integration with TheHive</strong></a>: Connected Wazuh with TheHive to enhance incident response.
+  </li>
+  <li>
+    <a href="/Wazuh/Wazuh%20Integration%20with%20Suricata"><strong>Integration with Suricata</strong></a>: Linked Wazuh with Suricata IDS for better threat detection and correlation.
+  </li>
+</ul>
+
+<h3>🧠 Incident Response Platform (TheHive, Cortex, MISP)</h3>
+<p>Built a complete open-source incident response stack to analyze and manage threats.</p>
+<ul>
+  <li>
+    <a href="/TheHive-Cortex-MISP/TheHive-Cortex-MISP%20Setup%20and%20Integration"><strong>Setup and Integration</strong></a>: Installed and configured TheHive, Cortex, and MISP to streamline threat intel and automate response workflows.
+  </li>
+</ul>
+
+<h3>📊 Splunk</h3>
+<p>Used Splunk Enterprise for threat analysis and visualization.</p>
+<ul>
+  <li>
+    <a href="/Splunk/DNS%20Spoofing%20Analysis"><strong>DNS Spoofing Analysis</strong></a>: Investigated a simulated DNS spoofing attack using Splunk dashboards and queries.
+  </li>
+</ul>
+
+<h3>🌐 Suricata IDS/IPS</h3>
+<p>Deployed Suricata to detect suspicious activity in network traffic.</p>
+<ul>
+  <li>
+    <a href="/Suricata/Suricata%20Installation%20and%20Configuration"><strong>Installation and Configuration</strong></a>: Set up Suricata with rule tuning and log forwarding for better visibility and control.
+  </li>
+</ul>  
