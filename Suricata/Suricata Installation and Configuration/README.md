@@ -19,9 +19,24 @@ Then, follow these steps to install and deploy Suricata:
    ![AF Packet Network Interface](images/af-net-interface.png)  
    ![PCAP Network Interface](images/pcap-net-interface.png)  
 5. Set the **community-id** value to **true** to correlate events across different security tools.  
-   ![Community Flow ID](images/community-id.png)
+   ![Community Flow ID](images/community-id.png)  
 6. Run **suricata-update** to verify and update the configuration and rule files.  
    ![Suricata Update](images/suricata-update.png)  
-   
-
-   
+   This **list-sources** command is used to display all available rule sources that you can enable or download.  
+   ![Suricata Update List Sources](images/list-sources.png)  
+   For instance, if you want to enable threat hunting rules from *tgreen*, you can use the `enable-source` command followed by the name of the rule source. After enabling the desired sources, update Suricata to apply the rules.  
+   ![Suricata Update Enable Source](images/enable-source.png)  
+7. Test the configuration using the following command to ensure everything is working properly: `sudo suricata -T -c /etc/suricata/suricata.yaml -v`.  
+   ![Test Configuration](images/test-config.png)  
+8. Restart the Suricata service.  
+   ![Restart Suricata](images/restart-suricata.png)  
+9. Test the Suricata IDS by running `curl http://testmynids.org/uid/index.html`. Then check the Suricata log file (**fast.log**). If logs appear as shown in the image below, it means the IDS is functioning correctly.  
+   ![Test IDS](images/test-ids.png)  
+10. Now, create a custom rule and save it as **local.rules** under **/etc/suricata/rules/**. This rule will detect ICMP ping requests from the internet to Suricata.  
+   ![Custom Rule](images/custom-rule.png)  
+11. Add the path to the new rule file in the Suricata configuration file.  
+   ![Add Custom Rule](images/add-custom-rule.png)  
+12. Test again using the command in step 7, then check the log files. Your new custom rule should generate a log entry after performing an ICMP ping to the Suricata host.  
+   ![Custom Rule Logs](images/custom-rule-logs.png)  
+    You can also view the logs in JSON format using the **eve.json** file along with the **jq** command for better readability.  
+   ![JSON Format Logs](images/json-logs.png)  
