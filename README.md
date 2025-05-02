@@ -17,7 +17,7 @@ List of projects:
     <ul>
       <li><strong><a href="/Wazuh/Wazuh SSH Brute Force Attack Protection">Wazuh SSH Brute Force Attack Protection</a></strong>: Configuring Wazuh to detect and mitigate SSH brute force attacks using a blocking mechanism</li>
       <li><strong><a href="/Wazuh/Wazuh Integration with TheHive">Wazuh Integration with TheHive</a></strong>: Configuring Wazuh to connect with TheHive</li>
-      <li><strong><a href="/Wazuh/Wazuh Integration with Suricata">Wazuh Integration with Suricata</a></strong>: Configuring Wazuh to connect with Suricata IDS</li>
+      <li><strong><a href="/Wazuh/Wazuh Integration with Suricata">Wazuh Integration with Suricata</a></strong>: Configuring Wazuh to connect with Suricata IDS/IPS</li>
     </ul>
   </li>
   <li>
