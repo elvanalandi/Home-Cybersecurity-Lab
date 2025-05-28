@@ -60,4 +60,7 @@ This is a collection of projects I’ve built to learn how to protect my home ne
   <li>
     <a href="/Grafana/Creating%20a%20Dashboard%20for%20AD%20Metrics"><strong>Creating a Dashboard for AD Metrics in Grafana</strong></a>: Built a custom Grafana dashboard using Prometheus data to visualize Active Directory performance metrics.
   </li>
+  <li>
+    <a href="/Grafana/Setting%20Up%20Alerts%20for%20AD%20Issues"><strong>Setting Up Alerts for AD Issues in Grafana</strong></a>: Configured alert rules in Grafana to monitor Active Directory performance and availability using Prometheus data, enabling prompt notification of issues.
+  </li>
 </ul>
