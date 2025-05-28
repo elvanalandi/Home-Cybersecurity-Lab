@@ -47,3 +47,11 @@ This is a collection of projects I’ve built to learn how to protect my home ne
     <a href="/Suricata/Suricata%20Installation%20and%20Configuration"><strong>Installation and Configuration</strong></a>: Set up Suricata with rule tuning and log forwarding for better visibility and control.
   </li>
 </ul>  
+
+<h3>🛡️ Active Directory Monitoring with Grafana</h3>
+<p>Visualize and monitor Active Directory performance and system health by integrating Windows Exporter, Prometheus, and Grafana.</p>
+<ul>
+  <li>
+    <a href="/Grafana/Tools%20Installation%20and%20Configuration"><strong>Installation of Windows Exporter, Prometheus, and Grafana</strong></a>: Installed Windows Exporter (formerly WMI Exporter) on domain controllers to expose key AD metrics such as CPU usage and system uptime. Configured Prometheus to collect these metrics at regular intervals and set up Grafana dashboards for real-time visibility and alerting.
+  </li>
+</ul>
