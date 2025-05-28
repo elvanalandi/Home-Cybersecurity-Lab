@@ -54,4 +54,7 @@ This is a collection of projects I’ve built to learn how to protect my home ne
   <li>
     <a href="/Grafana/Tools%20Installation%20and%20Configuration"><strong>Installation of Windows Exporter, Prometheus, and Grafana</strong></a>: Installed Windows Exporter (formerly WMI Exporter) on domain controllers to expose key AD metrics such as CPU usage and system uptime. Configured Prometheus to collect these metrics at regular intervals and set up Grafana dashboards for real-time visibility and alerting.
   </li>
+  <li>
+    <a href="/Grafana/Setting%20Up%20Prometheus%20Data%20Source"><strong>Setting Up Prometheus Data Source in Grafana</strong></a>: Connected Prometheus to Grafana by configuring it as a data source.
+  </li>
 </ul>
