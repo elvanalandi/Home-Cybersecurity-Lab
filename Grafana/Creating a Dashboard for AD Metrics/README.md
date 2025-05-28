@@ -24,7 +24,7 @@ This guide provides a step-by-step walkthrough for building a Grafana dashboard 
      Values: **Last**  
    - Axis:  
      Label: **Percentages**  
-   - Standard options:
+   - Standard options:  
      Unit: **Percent (0.0-1.0)**  
      Min: **0**  
      Max: **1**  
