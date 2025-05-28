@@ -30,7 +30,7 @@ This guide provides a step-by-step walkthrough for building a Grafana dashboard 
      Max: **1**  
      Display name: **CPU**  
    - Threshold:  
-     Add 80% threshold with red line.
+     Add 80% threshold with red line.  
    Save the dashboard to apply the changes.  
    ![Visualization Configuration](images/visualization-config.png)
 5. The result of visualization will appear on the newly created dashboard.  
