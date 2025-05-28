@@ -33,13 +33,16 @@ Then, follow these steps to install and deploy Windows Exporter:
    .\prometheus --config.file=prometheus.yml
    ```
    ![Execute Prometheus](images/run-prometheus.png)  
-4.  Verify the configuration by navigating to `localhost:9090/targets`in your browser. Ensure that the `windows_exporter` target is listed and marked as "UP".  
+4.  Verify the configuration by navigating to `http://<your Prometheus server IP>:9090/targets`in your browser. Ensure that the `windows_exporter` target is listed and marked as "UP".  
    ![Prometheus Targets](images/prometheus-targets.png)  
   
 ### Grafana Installation
 1. Head to the [Grafana Download page](https://grafana.com/grafana/download?platform=windows) to get the latest Windows installer.  
 2. After downloading the Grafana installer, run it and follow the instructions to complete the installation.
-3. Go to the Grafana page at `http://localhost:3000` and log in using the following credentials:  
+3. Go to the Grafana page at `http://<your Grafana server IP>:3000` and log in using the following credentials:  
    Username: **admin**  
    Password: **admin**  
    ![Grafana Page](images/grafana-page.png)  
+4. You will then be prompted to update your password.  
+   ![Update Password](images/update-password.png)  
+5. Grafana is now successfully installed, and you are ready to begin monitoring the AD DS server.  
