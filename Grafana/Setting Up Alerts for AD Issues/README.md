@@ -9,7 +9,7 @@ This guide provides a step-by-step walkthrough for setting up alerting in Grafan
   
 ### Setting Up Alert
 1. Log in to the Grafana web interface, navigate to the **Contact points** option under the **Alerting** section in the left side menu and click **Create contact point** button.  
-   ![Create Contact Point](images/create-contact-point.png)  
+   ![Create Contact Point](images/create-contact-points.png)  
 2. Provide a name, add recipient email addresses, and tick **Single email** if you want all recipients to receive one combined email. Then, save the contact point.  
    > **_NOTE:_** Emails will not be sent unless SMTP is configured in Grafana.
    > You can configure this in the **conf** folder. In my case, the configuration file is named **defaults.ini**.  
