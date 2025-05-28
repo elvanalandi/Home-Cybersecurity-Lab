@@ -57,4 +57,7 @@ This is a collection of projects I’ve built to learn how to protect my home ne
   <li>
     <a href="/Grafana/Setting%20Up%20Prometheus%20Data%20Source"><strong>Setting Up Prometheus Data Source in Grafana</strong></a>: Connected Prometheus to Grafana by configuring it as a data source.
   </li>
+  <li>
+    <a href="/Grafana/Creating%20a%20Dashboard%20for%20AD%20Metrics"><strong>Creating a Dashboard for AD Metrics in Grafana</strong></a>: Built a custom Grafana dashboard using Prometheus data to visualize Active Directory performance metrics.
+  </li>
 </ul>
