@@ -39,13 +39,12 @@ This is a collection of projects I’ve built to learn how to protect my home ne
     <a href="/Splunk/DNS%20Spoofing%20Analysis"><strong>DNS Spoofing Analysis</strong></a>: Investigated a simulated DNS spoofing attack using Splunk dashboards and queries.
   </li>
 </ul>
-<p>Installed <strong>Splunk SOAR</strong> to automate cybersecurity incident response workflows.</p>
+<p>Installed and integrated <strong>Splunk</strong> with <strong>Splunk SOAR</strong> to enable automated cybersecurity incident detection and response.</p>
 <ul>
   <li>
     <a href="/Splunk/Splunk%20SOAR/Splunk%20SOAR%20Installation"><strong>Splunk SOAR Installation</strong></a>: Deployed Splunk SOAR in a virtual machine environment.
   </li>
 </ul>
-<p>Integrated <strong>Splunk</strong> with <strong>Splunk SOAR</strong> to automate cybersecurity incident detection and response.</p>
 <ul>
   <li>
     <a href="/Splunk/Splunk%20SOAR/Splunk%20SOAR%20Integration"><strong>Splunk & Splunk SOAR Integration</strong></a>: Connected Splunk to Splunk SOAR to forward security alerts and trigger automated playbooks.
