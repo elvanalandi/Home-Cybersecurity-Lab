@@ -42,7 +42,7 @@ This is a collection of projects I’ve built to learn how to protect my home ne
 <p>Installed <strong>Splunk SOAR</strong> to automate cybersecurity incident response workflows.</p>
 <ul>
   <li>
-    <a href="/Splunk/Splunk%20SOAR"><strong>Splunk SOAR Installation</strong></a>: Deployed Splunk SOAR in a virtual machine environment.
+    <a href="/Splunk/Splunk%20SOAR/Splunk%20SOAR%20Installation"><strong>Splunk SOAR Installation</strong></a>: Deployed Splunk SOAR in a virtual machine environment.
   </li>
 </ul>
 
