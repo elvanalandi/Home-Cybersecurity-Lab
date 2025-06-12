@@ -45,6 +45,12 @@ This is a collection of projects I’ve built to learn how to protect my home ne
     <a href="/Splunk/Splunk%20SOAR/Splunk%20SOAR%20Installation"><strong>Splunk SOAR Installation</strong></a>: Deployed Splunk SOAR in a virtual machine environment.
   </li>
 </ul>
+<p>Integrated <strong>Splunk</strong> with <strong>Splunk SOAR</strong> to automate cybersecurity incident detection and response.</p>
+<ul>
+  <li>
+    <a href="/Splunk/Splunk%20SOAR/Splunk%20SOAR%20Integration"><strong>Splunk & Splunk SOAR Integration</strong></a>: Connected Splunk to Splunk SOAR to forward security alerts and trigger automated playbooks.
+  </li>
+</ul>
 
 <h3>🌐 Suricata IDS/IPS</h3>
 <p>Deployed Suricata to detect suspicious activity in network traffic.</p>
