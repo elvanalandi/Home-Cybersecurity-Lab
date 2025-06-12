@@ -33,10 +33,16 @@ This is a collection of projects I’ve built to learn how to protect my home ne
 </ul>
 
 <h3>📊 Splunk</h3>
-<p>Used Splunk Enterprise for threat analysis and visualization.</p>
+<p>Used <strong>Splunk Enterprise</strong> for threat analysis and visualization.</p>
 <ul>
   <li>
     <a href="/Splunk/DNS%20Spoofing%20Analysis"><strong>DNS Spoofing Analysis</strong></a>: Investigated a simulated DNS spoofing attack using Splunk dashboards and queries.
+  </li>
+</ul>
+<p>Installed <strong>Splunk SOAR</strong> to automate cybersecurity incident response workflows.</p>
+<ul>
+  <li>
+    <a href="/Splunk/Splunk%20SOAR"><strong>Splunk SOAR Installation</strong></a>: Deployed Splunk SOAR in a virtual machine environment.
   </li>
 </ul>
 
