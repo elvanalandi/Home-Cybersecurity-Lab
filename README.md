@@ -50,6 +50,21 @@ This is a collection of projects I’ve built to learn how to protect my home ne
     <a href="/Splunk/Splunk%20SOAR/Splunk%20SOAR%20Integration"><strong>Splunk & Splunk SOAR Integration</strong></a>: Connected Splunk to Splunk SOAR to forward security alerts and trigger automated playbooks.
   </li>
 </ul>
+<ul>
+  <li>
+    <a href="/Splunk/Splunk%20SOAR/Threat%20Intel%20Integration"><strong>Threat Intelligence Integration</strong></a>: Integrated <strong>VirusTotal</strong> and <strong>AbuseIPDB</strong> APIs within Splunk SOAR to enrich IOCs with real-time reputation data.
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/Splunk/Splunk%20SOAR/Email%20Ingestion%20and%20Analysis"><strong>Email Ingestion & Analysis</strong></a>: Configured <strong>IMAP</strong> to retrieve emails from monitored inboxes and <strong>SMTP</strong> to enable email-based alerts and analyst notifications. Extracted email IOCs for automated phishing analysis.
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/Splunk/Splunk%20SOAR/Phishing%20Playbook"><strong>Phishing Automated Playbook</strong></a>: Developed a playbook to automate phishing response, including IOC extraction, enrichment, reputation checks, and escalation.
+  </li>
+</ul>
 
 <h3>🌐 Suricata IDS/IPS</h3>
 <p>Deployed Suricata to detect suspicious activity in network traffic.</p>
