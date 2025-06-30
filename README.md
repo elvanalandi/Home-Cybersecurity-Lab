@@ -52,7 +52,7 @@ This is a collection of projects I’ve built to learn how to protect my home ne
 </ul>
 <ul>
   <li>
-    <a href="/Splunk/Splunk%20SOAR/Threat%20Intel%20Integration"><strong>Threat Intelligence Integration</strong></a>: Integrated <strong>VirusTotal</strong> and <strong>AbuseIPDB</strong> APIs within Splunk SOAR to enrich IOCs with real-time reputation data.
+    <a href="/Splunk/Splunk%20SOAR/Threat%20Intelligence%20Integration"><strong>Threat Intelligence Integration</strong></a>: Integrated <strong>VirusTotal</strong> and <strong>AbuseIPDB</strong> APIs within Splunk SOAR to enrich IOCs with real-time reputation data.
   </li>
 </ul>
 <ul>
