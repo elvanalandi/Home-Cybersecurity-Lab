@@ -43,5 +43,10 @@ This project demonstrates how to integrate Gmail Email with Splunk SOAR for auto
 6. **Save and Test Connection**  
    After completing the configuration, click **Save**, then navigate to **Asset Settings** and run **Test Connectivity** to verify that the integration is working successfully.  
    ![IMAP Connectivity Test](images/imap-connectivity-test.png)  
-   
+7. **Ingest Emails from Gmail as Events**  
+   Return to the **Ingest Settings** tab. You should now see that the **Poll Now** button is clickable. Clicking this will initiate a poll to retrieve emails from the configured Gmail inbox and ingest them into Splunk SOAR as events.  
+   ![IMAP Poll Now](images/imap-poll-now.png)  
+   A **Poll Now** popup will appear, Specify the desired values for **Maximum Containers (Events)** and **Maximum Artifacts per Container**.  
+   Then, click **Poll Now** to begin the ingestion process.  
+   ![IMAP Polling containers](images/imap-poll-containers.png)  
    
