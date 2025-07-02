@@ -6,7 +6,7 @@
 - [AbuseIPDB Integration Steps](#abuseipdb-integration-steps) 
 
 ### Overview
-This project demonstrates how to integrate Threat Intelligence platform like VirusTotal and AbuseIPDB with Splunk SOAR  enrich Indicators of Compromise (IOCs) and enhance automated threat analysis and response capabilities.  
+This project demonstrates how to integrate Threat Intelligence platform like VirusTotal and AbuseIPDB with Splunk SOAR to enrich Indicators of Compromise (IOCs) and enhance automated threat analysis and response capabilities.  
 
 ### Requirements
 - A running and accessible instance of **Splunk SOAR**
