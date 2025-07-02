@@ -57,7 +57,7 @@ This is a collection of projects I’ve built to learn how to protect my home ne
 </ul>
 <ul>
   <li>
-    <a href="/Splunk/Splunk%20SOAR/Email%20Ingestion%20and%20Analysis"><strong>Email Ingestion & Analysis</strong></a>: Configured <strong>IMAP</strong> to retrieve emails from monitored inboxes and <strong>SMTP</strong> to enable email-based alerts and analyst notifications. Extracted email IOCs for automated phishing analysis.
+    <a href="/Splunk/Splunk%20SOAR/Email%20Ingestion"><strong>Email Ingestion</strong></a>: Configured <strong>IMAP</strong> to retrieve emails from monitored inboxes and <strong>SMTP</strong> to enable email-based alerts and analyst notifications.
   </li>
 </ul>
 <ul>
