@@ -3,7 +3,8 @@
 - [Overview](#overview)  
 - [Requirements](#requirements)  
 - [Gmail Email Integration Steps](#gmail-email-integration-steps)
-- [IMAP Integration Steps](#imap-integration-steps) 
+- [IMAP Integration Steps](#imap-integration-steps)
+- [SMTP Integration Steps](#smtp-integration-steps)  
 
 ### Overview
 This project demonstrates how to integrate Gmail Email with Splunk SOAR for automated email ingestion and analysis.  
@@ -21,7 +22,7 @@ This project demonstrates how to integrate Gmail Email with Splunk SOAR for auto
    Be sure to store the password in a safe place, as it will be displayed only once.  
 
 ### IMAP Integration Steps  
-1. **Install the IMAP App in Splunk SOAR**  
+1. **Install the IMAP App on Splunk SOAR**  
    Navigate to the **Apps** dashboard, click **New App**, search for **IMAP**, and install it.  
    ![Install IMAP](images/install-imap.png)  
 2. **IMAP Configuration**  
@@ -49,4 +50,18 @@ This project demonstrates how to integrate Gmail Email with Splunk SOAR for auto
    A **Poll Now** popup will appear, Specify the desired values for **Maximum Containers (Events)** and **Maximum Artifacts per Container**.  
    Then, click **Poll Now** to begin the ingestion process.  
    ![IMAP Polling containers](images/imap-poll-containers.png)  
-   
+
+### SMTP Integration Steps 
+1. **Install the SMTP App on Splunk SOAR**  
+   Similar to the IMAP installation process, navigate to **New App**, search for SMTP, and install it.  
+   ![Install SMTP](images/install-smtp.png)  
+2. **SMTP Configuration**  
+   In the **Asset Settings**, configure the following fields:  
+   - **Server IP/Hostname**: `smtp.gmail.com`  
+   - **Port**: `587`  
+   - **Authentication type**: `Basic`  
+   - **Username**: *(Gmail address for Analyst)*  
+   - **Password**: *(The App Password for Analyst email that has been generated earlier)*  
+   - **SSL Method**: `StartTLS`  
+   ![SMTP Asset Settings](images/smtp-asset-settings.png)  
+   All other settings can remain the same as in the IMAP configuration.  
