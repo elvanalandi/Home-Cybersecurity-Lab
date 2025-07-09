@@ -1,0 +1,76 @@
+def extract_email_iocs(headers=None, body=None, **kwargs):
+    """
+    Args:
+        headers
+        body
+    
+    Returns a JSON-serializable object that implements the configured data paths:
+        urls
+        ips
+        emails
+    """
+    ############################ Custom Code Goes Below This Line #################################
+    import json
+    import phantom.rules as phantom
+    import re
+    import ipaddress
+
+    outputs = {
+        "urls": [],
+        "ips": [],
+        "emails": []
+    }
+    
+    combined_text = ""
+    
+    # --- Combine header fields into one big string ---
+    if isinstance(headers, list):
+        for item in headers:
+            if isinstance(item, list):
+                for sub in item:
+                    if isinstance(sub, dict):
+                        for value in sub.values():
+                            if isinstance(value, str):
+                                combined_text += value + "\n"
+            elif isinstance(item, dict):
+                for value in item.values():
+                    if isinstance(value, str):
+                        combined_text += value + "\n"
+
+    # --- Combine email body (list of strings) ---
+    if isinstance(body, list):
+        non_empty_bodies = [b for b in body if b and b.strip()]
+        combined_text += "\n".join(non_empty_bodies) + "\n"
+    elif isinstance(body, str):
+        combined_text += body + "\n"
+
+    # Regex patterns
+    url_pattern = r'\b(?:https?://|http://|www\.)[^\s<>"\'()]+'
+    ip_pattern = r'((?:\d{1,3}\.){3}\d{1,3})|((?:[a-fA-F0-9]{1,4}:){1,7}[a-fA-F0-9]{1,4})'
+    email_pattern = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
+
+    # Find matches
+    urls_found = set(re.findall(url_pattern, combined_text, re.IGNORECASE))
+    emails_found = set([e.lower() for e in re.findall(email_pattern, combined_text)])
+
+    # Get raw IPs
+    raw_ips = re.findall(ip_pattern, combined_text)
+    ips_flat = [ip[0] if ip[0] else ip[1] for ip in raw_ips]
+
+    # Validate IPs (IPv4 and IPv6)
+    clean_ips = []
+    for ip in ips_flat:
+        try:
+            ipaddress.ip_address(ip)
+            clean_ips.append(ip)
+        except ValueError:
+            continue
+
+    # Save outputs
+    outputs["urls"] = sorted(urls_found)
+    outputs["ips"] = sorted(set(clean_ips))
+    outputs["emails"] = sorted(emails_found)
+
+    # Return a JSON-serializable object
+    json.dumps(outputs)  # Will raise an exception if the :outputs: object is not JSON-serializable
+    return outputs

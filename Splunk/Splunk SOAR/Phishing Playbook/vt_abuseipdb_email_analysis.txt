@@ -1,0 +1,226 @@
+def vt_abuseipdb_email_analysis(headers=None, vt_result=None, abuseipdb_result=None, email_body=None, vt_file_results=None, **kwargs):
+    """
+    Args:
+        headers
+        vt_result
+        abuseipdb_result
+        email_body
+        vt_file_results
+    
+    Returns a JSON-serializable object that implements the configured data paths:
+        verdict
+        reason
+        sender
+        avg_score
+        body
+        url_result_summary
+        file_result_summary
+    """
+    ############################ Custom Code Goes Below This Line #################################
+    import json
+    import phantom.rules as phantom
+    import re
+
+    headers = headers or {}
+    email_body = email_body or ""
+    outputs = {
+        "body": "",
+        "verdict": "benign",
+        "reason": "No threat indicators found",
+        "sender": "",
+        "avg_score": 0,
+        "url_result_summary": "",
+        "file_result_summary": ""
+    }
+
+    
+    # --- Extract sender email from headers ---
+    from_header = ""
+    if isinstance(headers, list) and len(headers) > 0:
+        nested = headers[0]
+        if isinstance(nested, list) and len(nested) > 0:
+            header_dict = nested[0]
+            if isinstance(header_dict, dict):
+                from_header = header_dict.get("From", "").strip()
+                
+    # Fallback if needed
+    if not from_header:
+        from_header = "<Unknown Sender>"
+        
+    sender_match = re.search(r'<([^>]+)>', from_header)
+    outputs["sender"] = sender_match.group(1) if sender_match else from_header.strip()
+
+    # --- Suspicious Content Analysis ---
+    cleaned_body = []
+
+    for part in email_body:
+        # Skip if the part is None
+        if part is None:
+            continue
+        
+        part_str = str(part).strip()
+        
+        # Skip if the result is an empty string
+        if not part_str:
+            continue
+
+        # Add valid part to the cleaned list
+        cleaned_body.append(part_str)
+
+    if cleaned_body:
+        outputs["body"] = cleaned_body
+
+    suspicious_keywords = [
+        "verify your account", "click here", "update your info",
+        "login to avoid suspension", "password expired",
+        "security alert", "your account has been suspended",
+        "reset your password", "confirm your identity", "unusual activity"
+    ]
+    
+    lower_body = " ".join(cleaned_body).lower()
+    
+    content_flag = any(keyword in lower_body for keyword in suspicious_keywords)
+    
+    vt_result = vt_result or []
+    vt_file_results = vt_file_results or []
+    abuseipdb_result = abuseipdb_result or []
+    
+    # --- VirusTotal URLs/Domains Analysis ---
+    vt_flag = False
+    
+    if vt_result:
+        if isinstance(vt_result, list):
+            for item in vt_result:
+                attributes = None
+                if isinstance(item, list) and item:
+                    attributes = item[0].get("attributes", {})
+                elif isinstance(item, dict):
+                    attributes = item.get("attributes", {})
+                if attributes:
+                    stats = attributes.get("last_analysis_stats", {})
+                    malicious_count = stats.get("malicious", 0)
+        
+                    if isinstance(malicious_count, int) and malicious_count >= 1:
+                        vt_flag = True
+                        break
+
+    
+    # --- VirusTotal URL Summary Message ---
+    vt_messages = []
+
+    for item in vt_result:
+
+        if isinstance(item, list) and item:
+            item = item[0]
+        if not isinstance(item, dict):
+            continue
+
+        attributes = item.get("attributes", {})
+        stats = attributes.get("last_analysis_stats", {})
+        categories = attributes.get("categories", {})
+        url = attributes.get("last_final_url", attributes.get("url", "N/A"))
+        vt_link = item.get("links", {}).get("self", "N/A")
+
+        category_values = ", ".join(set(categories.values())) if isinstance(categories, dict) else "N/A"
+
+        message = f"""
+        URL: {url}
+        Scan Result: {stats.get("malicious", 0)} malicious, {stats.get("suspicious", 0)} suspicious, {stats.get("harmless", 0)} harmless
+        Categories: {category_values}
+        Final Verdict: {"Malicious" if stats.get("malicious", 0) > 0 else "Clean"}
+        VirusTotal Link: {vt_link}"""
+    
+        vt_messages.append(message)
+
+    outputs["url_result_summary"] = "".join(vt_messages)
+    
+    # --- VirusTotal File Analysis ---
+    vt_file_flag = False
+    
+    if vt_file_results:
+        if isinstance(vt_file_results, list):
+            for item in vt_file_results:
+                attributes = None
+                if isinstance(item, list) and item:
+                    attributes = item[0].get("attributes", {})
+                elif isinstance(item, dict):
+                    attributes = item.get("attributes", {})
+                if attributes:
+                    stats = attributes.get("last_analysis_stats", {})
+                    malicious_count = stats.get("malicious", 0)
+        
+                    if isinstance(malicious_count, int) and malicious_count >= 1:
+                        vt_file_flag = True
+                        break
+    
+    # --- VirusTotal File Attachment Summary ---
+    file_messages = []
+
+    for item in vt_file_results:
+        if isinstance(item, list) and item:
+            item = item[0]
+        if not isinstance(item, dict):
+            continue
+
+        attributes = item.get("attributes", {})
+        stats = attributes.get("last_analysis_stats", {})
+        file_name = attributes.get("meaningful_name", "Unknown File")
+        file_type = attributes.get("type_description", "Unknown Type")
+        vt_link = item.get("links", {}).get("self", "N/A")
+        threat_label = attributes.get("popular_threat_classification", {}).get("suggested_threat_label", "None")
+
+        file_message = f"""
+        Filename: {file_name}
+        File Type: {file_type}
+        Scan Result: {stats.get("malicious", 0)} malicious, {stats.get("suspicious", 0)} suspicious, {stats.get("harmless", 0)} harmless
+        Threat Label: {threat_label}
+        VirusTotal Link: {vt_link}"""
+        
+        file_messages.append(file_message)
+        
+    outputs["file_result_summary"] = "".join(file_messages)
+    
+    # --- AbuseIPDB Analysis ---
+    abuse_flag = False
+    scores = []
+    
+    if abuseipdb_result:
+        if isinstance(abuseipdb_result, list):
+            for item in abuseipdb_result:
+                if isinstance(item, list) and item and isinstance(item[0], dict):
+                    data = item[0].get("data", {})
+                    score = data.get("abuseConfidenceScore")
+                    if isinstance(score, (int, float)):
+                        scores.append(score)
+    
+        if scores:
+            avg_score = sum(scores) / len(scores)
+            if avg_score >= 50:
+                outputs["avg_score"] = avg_score
+                abuse_flag = True
+    
+    # --- Build Verdict and Reason ---
+    detailed_reasons = []
+
+    if content_flag:
+        detailed_reasons.append("Email body contains suspicious phrases (e.g., phishing language like 'verify your account', 'click here')")
+
+    if vt_flag:
+        detailed_reasons.append("One or more embedded URLs/domains were flagged as **malicious** by VirusTotal")
+
+    if vt_file_flag:
+        detailed_reasons.append("An attachment was marked **malicious** based on VirusTotal file reputation")
+
+    if abuse_flag:
+        detailed_reasons.append("IP addresses found in headers have a high AbuseIPDB confidence score (avg ≥ 50)")
+
+    if detailed_reasons:
+        outputs["verdict"] = "malicious"
+        outputs["reason"] = "\n".join(detailed_reasons)
+    else:
+        outputs["verdict"] = "benign"
+        outputs["reason"] = "No threats detected based on content, URL/file reputation, or sender IP abuse reports."
+
+    # JSON validation
+    json.dumps(outputs)
+    return outputs
