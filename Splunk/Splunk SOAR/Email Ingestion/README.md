@@ -18,7 +18,7 @@ This project demonstrates how to integrate Gmail Email with Splunk SOAR for auto
    Visit the [Gmail App Passwords page](https://myaccount.google.com/apppasswords). Create a new app name, then click the **Create** button.  
    This step must be completed for both Gmail Accounts (the analyst account and the account to be monitored).  
    ![App Passwords](images/app-passwords.png)  
-3. **Secure the App Password**  
+2. **Secure the App Password**  
    Be sure to store the password in a safe place, as it will be displayed only once.  
 
 ### IMAP Integration Steps  
