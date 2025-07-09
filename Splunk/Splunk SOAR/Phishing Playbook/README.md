@@ -54,6 +54,6 @@ This project demonstrates how to develop a phishing playbook in Splunk SOAR to a
 6. **Check IPs in AbuseIPDB Action Block**  
    Add an Action Block using the **lookup ip** action from the **AbuseIPDB** app. I added some custom code to support handling both single IPs and lists of IPs.  
    ![Check IP in AbuseIPDB Action Block](images/abuseipdb-block.png)  
-7. **URL Decision Block**
+7. **URL Decision Block**  
    This block checks if at least one URL was detected in the email. If a URL is found, it proceeds to URL analysis. I unchecked the **Join settings** on the `check_ips_in_abuseipdb` block so that the playbook continues even if no IPs are detected.  
    ![URL Decision Block](images/url-decision.png)  
