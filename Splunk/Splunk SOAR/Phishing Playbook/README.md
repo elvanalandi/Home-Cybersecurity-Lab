@@ -46,14 +46,37 @@ This project demonstrates how to develop a phishing playbook in Splunk SOAR to a
      
    [Email Analysis Custom Function](vt_abuseipdb_email_analysis.txt)  
 4. **Extract Email IOCs Utility Block**  
-   Next, add a Utility Block using the **extract_email_iocs** function.  Map the headers to the **List Email** data and the body to the **CEF artifact** `bodyPart1` field.  
+   Next, add a Utility Block using the **extract_email_iocs** function. Map the headers to the **List Email** data and the body to the **CEF artifact** `bodyPart1` field.  
    ![Extract Email IOCs Function](images/extract_email_iocs_function.png)  
 5. **IP Decision Block**   
    This Decision Block checks whether the email contains any IP addresses to analyse. If the result from the extraction is **not empty**, the playbook proceeds with IP analysis using AbuseIPDB.  
    ![IP Decision Block](images/ip-decision.png)  
 6. **Check IPs in AbuseIPDB Action Block**  
-   Add an Action Block using the **lookup ip** action from the **AbuseIPDB** app. I added some custom code to support handling both single IPs and lists of IPs.  
+   Add an Action Block using the **lookup ip** action from the **AbuseIPDB** app. I added some custom code to support handling both single IP and a list of IPs.  
    ![Check IP in AbuseIPDB Action Block](images/abuseipdb-block.png)  
 7. **URL Decision Block**  
    This block checks if at least one URL was detected in the email. If a URL is found, it proceeds to URL analysis. I unchecked the **Join settings** on the `check_ips_in_abuseipdb` block so that the playbook continues even if no IPs are detected.  
    ![URL Decision Block](images/url-decision.png)  
+8. **Check URLs in VirusTotal Action Block**  
+   Add an Action Block using the **url reputation** action from the **VirusTotal** app. Similar to the AbuseIPDB action block, I included custom code to support both a single URL and a list of URLs.  
+   ![Check URLs in VirusTotal Action Block](images/url-check-vt-block.png)  
+9. **FileHash Decision Block**  
+   This block checks whether the `fileHash`, `fileName`, or `vaultId` is not empty (i.e., not **None**). If any of them is present, the workflow proceeds to check the file attachment using VirusTotal.  
+   ![File Hash Decision Block](images/filehash-decision.png)  
+10. **Check File Attachments in VirusTotal Action Block**  
+    Add an Action Block using the **file reputation** action from the **VirusTotal** app to scan the file attachment.  
+    ![Check File Attachments in VirusTotal Action Block](images/file-check-vt-block.png)  
+11. **Email Analysis Utility Block**  
+    This is the main component of this playbook. The email analysis function we created earlier will be applied here. I mapped the headers from IMAP, results from AbuseIPDB and VirusTotal, and the email body from the artifact as inputs to the function.  
+    ![Email Analysis Function](images/email-analysis-function.png)  
+12. **Verdict Decision Block**  
+    Based on the result from the email analysis function, if the verdict is **malicious**, the playbook automatically proceeds to notify the analyst.  
+    ![Verdict Decision Block](images/verdict-decision.png)  
+13. **Email Analyst Action Block**  
+    Using the SMTP app, specify the analyst's Gmail account and configure the subject and body of the email. I created a custom email body to deliver a comprehensive and informative summary, allowing the analyst to quickly escalate the issue. All details are sourced from the analysis results.  
+    ![Email Notification](images/email-notification.png)  
+    The email body includes a summary of results from VirusTotal and AbuseIPDB, the sender's email, raw message content, the final verdict, and the reasoning.  
+    ![Email Notification Body](images/email-notification-body.png)  
+    The images below show examples of the email alert sent to the analyst.  
+    ![Email Alert Example](images/email-alert-1.png)  
+    ![Email Alert Example Cont](images/email-alert-2.png)  
