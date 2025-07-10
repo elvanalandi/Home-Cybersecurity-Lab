@@ -47,7 +47,7 @@ This project demonstrates how to develop a phishing playbook in Splunk SOAR to a
    [Email Analysis Custom Function](vt_abuseipdb_email_analysis.txt)  
 4. **Extract Email IOCs Utility Block**  
    Next, add a Utility Block using the **extract_email_iocs** function. Map the headers to the **List Email** data and the body to the **CEF artifact** `bodyPart1` field.  
-   ![Extract Email IOCs Function](images/extract_email_iocs_function.png)  
+   ![Extract Email IOCs Function](images/extract-email-iocs-function.png)  
 5. **IP Decision Block**   
    This Decision Block checks whether the email contains any IP addresses to analyse. If the result from the extraction is **not empty**, the playbook proceeds with IP analysis using AbuseIPDB.  
    ![IP Decision Block](images/ip-decision.png)  
