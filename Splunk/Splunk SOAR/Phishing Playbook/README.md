@@ -80,3 +80,4 @@ This project demonstrates how to develop a phishing playbook in Splunk SOAR to a
     The images below show examples of the email alert sent to the analyst.  
     ![Email Alert Example](images/email-alert-1.png)  
     ![Email Alert Example Cont](images/email-alert-2.png)  
+    The email message is intentionally designed to trigger detection alerts (not a real phishing email).  
