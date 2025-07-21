@@ -33,6 +33,12 @@ This is a collection of projects I’ve built to learn how to protect my home ne
 </ul>
 
 <h3>📊 Splunk</h3>
+<p>Integrated <strong>Windows Logs</strong> into Splunk for threat detection</p>
+<ul>
+  <li>
+    <a href="/Splunk/Windows%20Logs%20Ingestion"><strong>Windows Logs Ingestion</strong></a>: Collected and ingested Windows Event Logs into Splunk Enterprise using Universal Forwarder for future threat hunting and analysis.
+  </li>
+</ul>
 <p>Used <strong>Splunk Enterprise</strong> for threat analysis and visualization.</p>
 <ul>
   <li>
