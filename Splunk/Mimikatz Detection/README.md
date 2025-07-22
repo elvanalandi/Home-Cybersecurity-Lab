@@ -84,7 +84,8 @@ To detect these behaviors, we can focus on the following patterns:
    ```
    C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
    ```
-   > If the file doesn't exist yet, create it manually in that directory.  
+   > If the file doesn't exist yet, create it manually in that directory.
+     
    In the `inputs.conf` file of the Splunk Forwarder, add the following configuration:  
    ```
    [monitor://<your transcription folder path>]
@@ -102,3 +103,4 @@ To detect these behaviors, we can focus on the following patterns:
 - [Detect Pass the Hash Attack](https://blog.netwrix.com/2021/11/30/how-to-detect-pass-the-hash-attacks/)
 - [Windows Security Event ID 4769](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4769)
 - [MITRE ATT&CK Pass the Ticket](https://attack.mitre.org/techniques/T1550/003/)
+- [Configure PowerShell logging](https://help.splunk.com/en/security-offerings/splunk-user-behavior-analytics/get-data-in/5.4.1/add-other-data-to-splunk-uba/configure-powershell-logging-to-see-powershell-anomalies-in-splunk-uba)  
