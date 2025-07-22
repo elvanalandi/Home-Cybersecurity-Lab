@@ -3,7 +3,7 @@
 - [Overview](#overview)  
 - [Requirements](#requirements)  
 - [Mimikatz Behavior](#mimikatz-behavior)  
-- [Mimikatz Detection](#mimikatz-detection)
+- [Mimikatz Detection Strategy](#mimikatz-detection-strategy)
 - [Preparation](#preparation)
 - [References](#references)
     
@@ -29,7 +29,7 @@ Below are some of its key functionalities:
 With those capabilities, Mimikatz frequently interacts with `lsass.exe`, loads sensitive DLLs, and carries out operations that require elevated memory access rights.  
 Mimikatz is categorized as a post-exploitation tool because it requires prior access to the system. It is often combined with other tools and techniques like Cobalt Strike to bypass security defenses and evade detection.
 
-### Mimikatz Detection
+### Mimikatz Detection Strategy
 To detect these behaviors, we can focus on the following patterns:  
 - **Suspicious memory access to LSASS** (`lsass.exe`)  
   Detected via Sysmon Event ID 10  (Process Access) or Windows Security Event ID 4688 (Process Creation).  
@@ -48,7 +48,53 @@ To detect these behaviors, we can focus on the following patterns:
 
 ### Preparation
 > **ℹ️ Info:** For now, I use only Sysmon and PowerShell Script Block Logging to detect Mimikatz. I plan to add more Windows Security Event IDs in the future to reduce false positives.
-
+1. **Configure Sysmon Event ID 10**  
+   To collect Event ID 10 (Process Access), you need to modify the Sysmon configuration.  
+   Add the following code inside the <ProcessAccess> tag to monitor access to lsass.exe:  
+   ```
+   <TargetImage condition="is">C:\Windows\System32\lsass.exe</TargetImage>
+   ```
+   ![Add TargetImage LSASS on Sysmon Event ID 10](images/add-lsass-sysmon.png)  
+   Then, navigate to the Sysmon installation directory and run the following command to apply the updated configuration (replace the file name with your actual config file):  
+   ```
+   Sysmon64.exe -c sysmonconfig-export.xml
+   ```
+2. **Configure module logging for PowerShell**  
+   - Open the **Group Policy Editor** by pressing `Windows+R`, typing `gpedit.msc` and pressing Enter  
+   - Select **Computer Configuration** > **Administrative Templates** > **Windows Components** > **Windows PowerShell**  
+   - Double-click **Turn on Module Logging** and set it to **Enabled**
+   - In the **Options** section, click the **Show** button
+   - Enter `*` or `*=*` as the module name to record all PowerShell modules  
+   - Click **OK** on all open windows to apply the changes  
+   ![Turn On Module Logging](images/turn-on-module-logging.png)  
+3. **Configure script block logging for PowerShell**  
+   - Still within the **Windows PowerShell** GPO settings, double-click **Turn on PowerShell Script Block Logging** and set it to **Enabled**  
+   ![Turn On Script Block Logging](images/turn-on-script-block-logging.png)  
+   - Additionally, to enable **Event ID 4688** (Process Creation), configure **Audit Process Creation**:
+     Go to  **Computer Configuration** > **Windows Settings** > **Security Settings** > **Advanced Audit Policy Configuration** > **System Audit Policies** > **Detailed Tracking**  
+     Double-click **Audit Process Creation**,  set it to **Enabled**, and check **Configure the following audit events** > **Success**  
+    ![Turn on Audit Process Creation](images/turn-on-audit-process-creation.png)
+4. **Configure transcription logging**
+   - In **Windows PowerShell** GPO settings, enable **Turn on PowerShell Transcription**
+   - Set the **Transcript output directory**  to your preferred directory path
+   - Enable **Include invocation headers** for more detailed context  
+   ![Turn on Transcription Logging](images/turn-on-transcription-logging.png)
+5. **Enable monitoring to the Transcription Logging**  
+   Navigate to the following path:  
+   ```
+   C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
+   ```
+   > If the file doesn't exist yet, create it manually in that directory.  
+   In the `inputs.conf` file of the Splunk Forwarder, add the following configuration:  
+   ```
+   [monitor://<your transcription folder path>]
+   disabled = 0
+   index = powershell
+   sourcetype = PowerShellTranscript
+   recursive = true
+   ```
+   ![Monitor Transcript](images/monitor-transcript.png)  
+     
 ### References
 - [Detect Mimikatz using PowerShell Script Block Logging](https://research.splunk.com/endpoint/8148c29c-c952-11eb-9255-acde48001122/)
 - [Detect Mimikatz using Loaded Images](https://research.splunk.com/deprecated/29e307ba-40af-4ab2-91b2-3c6b392bbba0/)
