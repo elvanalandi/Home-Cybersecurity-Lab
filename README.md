@@ -45,7 +45,7 @@ This is a collection of projects I’ve built to learn how to protect my home ne
     <a href="/Splunk/DNS%20Spoofing%20Analysis"><strong>DNS Spoofing Analysis</strong></a>: Investigated a simulated DNS spoofing attack using Splunk dashboards and queries.
   </li>
   <li>
-    <a href="/Splunk/Mimikatz%20Detection"><strong>Mimikatz Detection</strong></a>: Mimikatz detection using Splunk dashboard and queries.
+    <a href="/Splunk/Mimikatz%20Detection"><strong>Mimikatz Detection</strong></a>: Mimikatz detection using Sysmon and Windows PowerShell events in Splunk, including dashboard creation and queries.
   </li>
 </ul>
 <p>Installed and integrated <strong>Splunk</strong> with <strong>Splunk SOAR</strong> to enable automated cybersecurity incident detection and response.</p>
