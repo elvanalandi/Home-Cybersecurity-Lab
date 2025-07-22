@@ -87,4 +87,7 @@ Sysmon enhances visibility into low-level system activity and is useful for thre
    Give the **Index Name** and **Save**.  
    ![Index Configuration](images/index-conf.png)  
    Create the `sysmon` index (and `windows` index if not already created) to match those specified in your `inputs.conf`, then click **Save**.  
-   
+
+> Test the Sysmon logs using the following query in Splunk:
+  
+![Test Sysmon Logs](images/sysmon-logs.png)
