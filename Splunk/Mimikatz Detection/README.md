@@ -1,4 +1,4 @@
-## Mimikatz Detection Using Sysmon in Splunk
+## Mimikatz Detection Using Sysmon and Windows PowerShell Event in Splunk
 ### Table of Contents
 - [Overview](#overview)  
 - [Requirements](#requirements)  
