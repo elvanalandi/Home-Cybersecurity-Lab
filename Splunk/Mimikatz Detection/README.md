@@ -5,6 +5,9 @@
 - [Mimikatz Behavior](#mimikatz-behavior)  
 - [Mimikatz Detection Strategy](#mimikatz-detection-strategy)
 - [Preparation](#preparation)
+- [Mimikatz Simulation](#mimikatz-simulation)
+- [Mimikatz Detection Dashboard](#mimikatz-detection-dashboard)
+- [Field Extraction using Regex](#field-extraction-using-regex)
 - [References](#references)
     
 ### Overview
@@ -78,7 +81,7 @@ To detect these behaviors, we can focus on the following patterns:
    <ImageLoaded condition="contains">samlib.dll</ImageLoaded>
    <ImageLoaded condition="contains">vaultcli.dll</ImageLoaded>
    ```
-   ![Add Common Mimikatz DLLs to Sysmon Event ID 7](images/sysmon-event-id-7.png)
+   ![Add Common Mimikatz DLLs to Sysmon Event ID 7](images/sysmon-event-id-7.png)  
    Finally, update the Sysmon configuration using the appropriate command:
    ```
    Sysmon64.exe -c sysmonconfig-export.xml
@@ -119,6 +122,100 @@ To detect these behaviors, we can focus on the following patterns:
    recursive = true
    ```
    ![Monitor Transcript](images/monitor-transcript.png)  
+
+### Mimikatz Simulation
+> ⚠️ Warning: This simulation should only be performed in a properly isolated and controlled lab environment.  
+> I do not take any responsibility for any misuse, damage, or consequences resulting from the use of this content. Proceed at your own risk.
+Mimikatz is often executed alongside other tools to increase stealth and evade detection. However, in this lab, I run it standalone to focus on detection techniques.  
+1. **Turn Off Windows Defender (Virus & Threat Protection)**  
+   Search for **Firewall & network protection** using the Windows search bar.  
+   ![Firewall & Network Protection](images/firewall.png)  
+   Then, turn off **Real-time protection** by clicking the toggle switch.  
+   ![Turn Off Protection](images/turn-off-protection.png)  
+2. **Download Mimikatz**  
+   You can download Mimikatz from [this ParrotSec repository](https://github.com/ParrotSec/mimikatz/tree/master) or from the [original creator](https://github.com/gentilkiwi/mimikatz/).  
+3. **Run Mimikatz**  
+   Open PowerShell and navigate to the folder containing Mimikatz  
+   Then, run the following command to launch it with administrator privileges:  
+   ```
+   Start-Process .\mimikatz.exe -Verb RunAs
+   ```
+   ![Run Mimikatz as Administrator](images/runas.png)  
+4. **Explore Mimikatz Commands**
+   If you have a Domain Controller and Kerberos server, you can simulate attacks like DCSync and Pass-the-Ticket.  
+   Since my current lab setup doesn’t include those, I’ll only demonstrate basic credential dumping commands.  
+   ![Mimikatz Basic Credentials Dumping Commands](images/creds-dump.png)
+   For more information on Mimikatz commands, this source provides some commands of [Mimikatz](https://happycamper84.medium.com/mimikatz-cheatsheet-ad2b88059b4) in details.  
+
+### Mimikatz Detection Dashboard
+1. **Open Splunk Dashboards**
+   Go to the **Dashboards** tab and click **Create New Dashboard**.  
+   ![Dashboards](images/dashboards.png)
+2. **Create a New Dashboard**
+   Fill in the **Dashboard Title** and choose the dashboard type. In this example, I’m using **Classic Dashboards**.
+   ![Create New Dashboard](images/create-new-dashboard.png)
+3. **Add Time Input**
+   Add a time range picker so users can filter results dynamically.
+   Click **+ Add Input**, select **Time**, set the label to **Time**, and the Token to **time**.
+   ![Add Input](images/add-input.png)  
+4. **Add Panel**  
+   Click **+ Add Panel** and choose a panel type. I selected a **Statistics Table**, as it's already informative.  
+   ![Add Panel](images/add-panel.png)  
+5. **Script Block Logging Panel (Event ID 4104)**  
+   This panel detects PowerShell-based Mimikatz activity using Event ID 4104.
+   Use the following SPL query:  
+   ```
+   index=* (source=WinEventLog:Microsoft-Windows-PowerShell/Operational OR source="XmlWinEventLog:Microsoft-Windows-PowerShell/Operational" OR source=WinEventLog:PowerShellCore/Operational OR source="XmlWinEventLog:PowerShellCore/Operational") EventCode=4104 | where match(ScriptBlockText, "(?i)mimikatz|-dumpcr|sekurlsa::pth|kerberos::ptt|kerberos::golden") | fillnull  | stats count min(_time) as firstTime max(_time) as lastTime values(UserID) as UserID values(ScriptBlockId) as ScriptBlockId values(EventCode) as EventCode values(Guid) as Guid values(Opcode) as Opcode values(Path) as Path values(ProcessID) as ProcessID by ScriptBlockText | eval firstTime = strftime(firstTime, "%Y-%m-%d %H:%M:%S") | eval lastTime = strftime(lastTime, "%Y-%m-%d %H:%M:%S")
+   ```
+   ![Panel for EventID 4104](images/eventid-4104.png)
+   Afterward, click **Add to Dashboard**.  
+   Set the Time Range to **Shared Time Picker** using the token `time`.
+   If you've already created the panel, you can still edit it to apply the shared time setting.  
+   ![Edit Time Range](images/time-range.png)
+   In the result, we can see the process ID and the scripts that were executed, which are related to Mimikatz. You can also change the Time widget as the input.  
+   ![Panel Result for EventID 4104](images/result-4104.png)  
+6. **Process Creation Panel (Sysmon Event ID 1)**  
+   This panel detects suspicious command-line activity via Sysmon Event ID 1. I included hash values so you can investigate them using VirusTotal.  
+   ```
+   index=* sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=1 | where match(CommandLine, "(?i)mimikatz|-dumpcr|sekurlsa::|kerberos::|golden|lsadump::") | stats count min(_time) as firstTime max(_time) as lastTime values(Image) as Images values(CommandLine) as Commands values(User) as Users values(host) as Hosts values(Hashes) as Hashes by ParentImage | eval firstTime = strftime(firstTime, "%Y-%m-%d %H:%M:%S") | eval lastTime = strftime(lastTime, "%Y-%m-%d %H:%M:%S")
+   ```
+   ![Panel for EventID 1](images/eventid-1.png)
+   Here, we can see that **Mimikatz** was executed under **PowerShell**, shown as the ParentImage.
+   ![Panel Result for EventID 1](images/result-1.png)  
+7. **DLL Injection Panel (Sysmon Event ID 7)**  
+   This panel detects common DLLs often associated with Mimikatz, as configured in Sysmon.
+   ```
+   index=* sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=7 | where match(ImageLoaded, "(?i)\\\\(samlib\.dll|vaultcli\.dll|cryptdll\.dll|cryptbase\.dll|hid\.dll|imm32\.dll|kernel32\.dll|msctf\.dll|ntdll\.dll|sechost\.dll|shell32\.dll|user32\.dll|wininet\.dll|winscard\.dll)$") 
+   AND match(Image, "(?i)lsass|mimikatz") | stats count min(_time) as firstTime max(_time) as lastTime values(ImageLoaded) as ImageLoaded values(ProcessId) as ProcessId values(ComputerName) as ComputerName by Image | eval firstTime = strftime(firstTime, "%Y-%m-%d %H:%M:%S") | eval lastTime = strftime(lastTime, "%Y-%m-%d %H:%M:%S")
+   ```
+   ![Panel for EventID 7](images/eventid-7.png)  
+   Among 14 common DLLs used by **Mimikatz**, 11 were matched in this simulation.  
+   ![Panel Result for EventID 7](images/result-7.png)  
+8. **LSASS Access Panel (Sysmon Event ID 10)**  
+   Mimikatz commonly accesses `lsass.exe` to extract credentials. This panel uses a **Column Chart** to visualize access attempts and which processes made them.  
+   ```
+   index=* sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=10 | where match(TargetImage, "(?i)lsass.exe")  | where GrantedAccess IN ("0x1010", "0x1438", "0x1fffff")  | stats count by SourceImage
+   ```
+   ![Panel for EventID 10](images/eventid-10.png)  
+   Mimikatz accessed **LSASS** 5 times during the simulation.  
+   ![Panel Result for EventID 10](images/result-10.png)  
+9. **PowerShell Transcript Logs Panel**  
+   This panel helps detect suspicious PowerShell commands that may not be captured by Event ID 4104.
+   ```
+   index=powershell sourcetype=PowerShellTranscript | rex field=_raw "(?:>|\#)\s*(?<command>.*)" | where match(command, "(?i)mimikatz|dcsync|sekurlsa::|kerberos::|lsadump|privilege::|golden") | stats min(_time) as firstSeen max(_time) as lastSeen by command | eval firstSeen=strftime(firstSeen, "%Y-%m-%d %H:%M:%S") | eval lastSeen=strftime(lastSeen, "%Y-%m-%d %H:%M:%S")
+   ```
+   ![Panel for Transcript Logs](images/powershell-transcript.png)  
+   The PowerShell Transcript Logs also successfully detected **Mimikatz** commands.  
+   ![Panel Result for Transcript Logs](images/result-transcript.png)
+  
+### Field Extraction using Regex
+Splunk may not always extract all fields automatically, so we can create manual extractions. I have demonstrated this in my [DNS Spoofing Analysis](https://github.com/elvanalandi/Home-Cybersecurity-Lab/tree/main/Splunk/DNS%20Spoofing%20Analysis) project. But, we use regex to extract fields from XML data.  
+1. **Choose the field**  
+   Select the field you want to extract, enter the Field Name, then click **Add Extraction**.  
+   ![Add Extraction](images/add-extraction.png)  
+2. **Regex**  
+   Below is a sample regex for XML data. The tag **<EventCode>** contains the field value you want to extract and use for filtering. Click **Preview** to see the extraction results, and **Save** once you are satisfied.  
+   ![Regex](images/regex.png)  
      
 ### References
 - [Detect Mimikatz using PowerShell Script Block Logging](https://research.splunk.com/endpoint/8148c29c-c952-11eb-9255-acde48001122/)
@@ -129,3 +226,4 @@ To detect these behaviors, we can focus on the following patterns:
 - [MITRE ATT&CK Pass the Ticket](https://attack.mitre.org/techniques/T1550/003/)
 - [Configure PowerShell logging](https://help.splunk.com/en/security-offerings/splunk-user-behavior-analytics/get-data-in/5.4.1/add-other-data-to-splunk-uba/configure-powershell-logging-to-see-powershell-anomalies-in-splunk-uba)  
 - [DLL List for Mimikatz](https://www.researchgate.net/figure/DLL-list-for-Mimikatz-Compared-to-Matsuda-et-al-10_tbl3_361991727)
+- [Mimikatz](https://happycamper84.medium.com/mimikatz-cheatsheet-ad2b88059b4)
