@@ -59,7 +59,31 @@ To detect these behaviors, we can focus on the following patterns:
    ```
    Sysmon64.exe -c sysmonconfig-export.xml
    ```
-2. **Configure module logging for PowerShell**  
+2. **Configure Sysmon Event ID 7**
+   To collect Event ID 7 (Image Load), add the following entries inside the `<ImageLoad>` tag in your Sysmon configuration:
+   ```
+   <Image condition="end with">lsass.exe</Image>
+   <ImageLoaded condition="contains">cryptbase.dll</ImageLoaded>
+   <ImageLoaded condition="contains">hid.dll</ImageLoaded>
+   <ImageLoaded condition="contains">imm32.dll</ImageLoaded>
+   <ImageLoaded condition="contains">kernel32.dll</ImageLoaded>
+   <ImageLoaded condition="contains">msctf.dll</ImageLoaded>
+   <ImageLoaded condition="contains">ntdll.dll</ImageLoaded>
+   <ImageLoaded condition="contains">sechost.dll</ImageLoaded>
+   <ImageLoaded condition="contains">shell32.dll</ImageLoaded>
+   <ImageLoaded condition="contains">user32.dll</ImageLoaded>
+   <ImageLoaded condition="contains">wininet.dll</ImageLoaded>
+   <ImageLoaded condition="contains">WinSCard.dll</ImageLoaded>
+   <ImageLoaded condition="contains">cryptdll.dll</ImageLoaded>
+   <ImageLoaded condition="contains">samlib.dll</ImageLoaded>
+   <ImageLoaded condition="contains">vaultcli.dll</ImageLoaded>
+   ```
+   ![Add Common Mimikatz DLLs to Sysmon Event ID 7](images/sysmon-event-id-7.png)
+   Finally, update the Sysmon configuration using the appropriate command:
+   ```
+   Sysmon64.exe -c sysmonconfig-export.xml
+   ```
+3. **Configure module logging for PowerShell**  
    - Open the **Group Policy Editor** by pressing `Windows+R`, typing `gpedit.msc` and pressing Enter  
    - Select **Computer Configuration** > **Administrative Templates** > **Windows Components** > **Windows PowerShell**  
    - Double-click **Turn on Module Logging** and set it to **Enabled**
@@ -67,19 +91,19 @@ To detect these behaviors, we can focus on the following patterns:
    - Enter `*` or `*=*` as the module name to record all PowerShell modules  
    - Click **OK** on all open windows to apply the changes  
    ![Turn On Module Logging](images/turn-on-module-logging.png)  
-3. **Configure script block logging for PowerShell**  
+4. **Configure script block logging for PowerShell**  
    - Still within the **Windows PowerShell** GPO settings, double-click **Turn on PowerShell Script Block Logging** and set it to **Enabled**  
    ![Turn On Script Block Logging](images/turn-on-script-block-logging.png)  
    - Additionally, to enable **Event ID 4688** (Process Creation), configure **Audit Process Creation**:
      Go to  **Computer Configuration** > **Windows Settings** > **Security Settings** > **Advanced Audit Policy Configuration** > **System Audit Policies** > **Detailed Tracking**  
      Double-click **Audit Process Creation**,  set it to **Enabled**, and check **Configure the following audit events** > **Success**  
     ![Turn on Audit Process Creation](images/turn-on-audit-process-creation.png)
-4. **Configure transcription logging**
+5. **Configure transcription logging**
    - In **Windows PowerShell** GPO settings, enable **Turn on PowerShell Transcription**
    - Set the **Transcript output directory**  to your preferred directory path
    - Enable **Include invocation headers** for more detailed context  
    ![Turn on Transcription Logging](images/turn-on-transcription-logging.png)
-5. **Enable monitoring to the Transcription Logging**  
+6. **Enable monitoring to the Transcription Logging**  
    Navigate to the following path:  
    ```
    C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
@@ -104,3 +128,4 @@ To detect these behaviors, we can focus on the following patterns:
 - [Windows Security Event ID 4769](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4769)
 - [MITRE ATT&CK Pass the Ticket](https://attack.mitre.org/techniques/T1550/003/)
 - [Configure PowerShell logging](https://help.splunk.com/en/security-offerings/splunk-user-behavior-analytics/get-data-in/5.4.1/add-other-data-to-splunk-uba/configure-powershell-logging-to-see-powershell-anomalies-in-splunk-uba)  
+- [DLL List for Mimikatz](https://www.researchgate.net/figure/DLL-list-for-Mimikatz-Compared-to-Matsuda-et-al-10_tbl3_361991727)
