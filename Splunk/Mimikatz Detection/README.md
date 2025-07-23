@@ -167,11 +167,11 @@ Mimikatz is often executed alongside other tools to increase stealth and evade d
    ```
    index=* (source=WinEventLog:Microsoft-Windows-PowerShell/Operational OR source="XmlWinEventLog:Microsoft-Windows-PowerShell/Operational" OR source=WinEventLog:PowerShellCore/Operational OR source="XmlWinEventLog:PowerShellCore/Operational") EventCode=4104 | where match(ScriptBlockText, "(?i)mimikatz|-dumpcr|sekurlsa::pth|kerberos::ptt|kerberos::golden") | fillnull  | stats count min(_time) as firstTime max(_time) as lastTime values(UserID) as UserID values(ScriptBlockId) as ScriptBlockId values(EventCode) as EventCode values(Guid) as Guid values(Opcode) as Opcode values(Path) as Path values(ProcessID) as ProcessID by ScriptBlockText | eval firstTime = strftime(firstTime, "%Y-%m-%d %H:%M:%S") | eval lastTime = strftime(lastTime, "%Y-%m-%d %H:%M:%S")
    ```
-   ![Panel for EventID 4104](images/eventid-4104.png)
+   ![Panel for EventID 4104](images/eventid-4104.png)  
    Afterward, click **Add to Dashboard**.  
-   Set the Time Range to **Shared Time Picker** using the token `time`.
+   Set the Time Range to **Shared Time Picker** using the token `time`.  
    If you've already created the panel, you can still edit it to apply the shared time setting.  
-   ![Edit Time Range](images/time-range.png)
+   ![Edit Time Range](images/time-range.png)  
    In the result, we can see the process ID and the scripts that were executed, which are related to Mimikatz. You can also change the Time widget as the input.  
    ![Panel Result for EventID 4104](images/result-4104.png)  
 6. **Process Creation Panel (Sysmon Event ID 1)**  
@@ -179,11 +179,11 @@ Mimikatz is often executed alongside other tools to increase stealth and evade d
    ```
    index=* sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=1 | where match(CommandLine, "(?i)mimikatz|-dumpcr|sekurlsa::|kerberos::|golden|lsadump::") | stats count min(_time) as firstTime max(_time) as lastTime values(Image) as Images values(CommandLine) as Commands values(User) as Users values(host) as Hosts values(Hashes) as Hashes by ParentImage | eval firstTime = strftime(firstTime, "%Y-%m-%d %H:%M:%S") | eval lastTime = strftime(lastTime, "%Y-%m-%d %H:%M:%S")
    ```
-   ![Panel for EventID 1](images/eventid-1.png)
-   Here, we can see that **Mimikatz** was executed under **PowerShell**, shown as the ParentImage.
+   ![Panel for EventID 1](images/eventid-1.png)  
+   Here, we can see that **Mimikatz** was executed under **PowerShell**, shown as the ParentImage.  
    ![Panel Result for EventID 1](images/result-1.png)  
 7. **DLL Injection Panel (Sysmon Event ID 7)**  
-   This panel detects common DLLs often associated with Mimikatz, as configured in Sysmon.
+   This panel detects common DLLs often associated with Mimikatz, as configured in Sysmon.  
    ```
    index=* sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=7 | where match(ImageLoaded, "(?i)\\\\(samlib\.dll|vaultcli\.dll|cryptdll\.dll|cryptbase\.dll|hid\.dll|imm32\.dll|kernel32\.dll|msctf\.dll|ntdll\.dll|sechost\.dll|shell32\.dll|user32\.dll|wininet\.dll|winscard\.dll)$") 
    AND match(Image, "(?i)lsass|mimikatz") | stats count min(_time) as firstTime max(_time) as lastTime values(ImageLoaded) as ImageLoaded values(ProcessId) as ProcessId values(ComputerName) as ComputerName by Image | eval firstTime = strftime(firstTime, "%Y-%m-%d %H:%M:%S") | eval lastTime = strftime(lastTime, "%Y-%m-%d %H:%M:%S")
@@ -200,16 +200,17 @@ Mimikatz is often executed alongside other tools to increase stealth and evade d
    Mimikatz accessed **LSASS** 5 times during the simulation.  
    ![Panel Result for EventID 10](images/result-10.png)  
 9. **PowerShell Transcript Logs Panel**  
-   This panel helps detect suspicious PowerShell commands that may not be captured by Event ID 4104.
+   This panel helps detect suspicious PowerShell commands that may not be captured by Event ID 4104.  
    ```
    index=powershell sourcetype=PowerShellTranscript | rex field=_raw "(?:>|\#)\s*(?<command>.*)" | where match(command, "(?i)mimikatz|dcsync|sekurlsa::|kerberos::|lsadump|privilege::|golden") | stats min(_time) as firstSeen max(_time) as lastSeen by command | eval firstSeen=strftime(firstSeen, "%Y-%m-%d %H:%M:%S") | eval lastSeen=strftime(lastSeen, "%Y-%m-%d %H:%M:%S")
    ```
    ![Panel for Transcript Logs](images/powershell-transcript.png)  
    The PowerShell Transcript Logs also successfully detected **Mimikatz** commands.  
-   ![Panel Result for Transcript Logs](images/result-transcript.png)
+   ![Panel Result for Transcript Logs](images/result-transcript.png)  
   
 ### Field Extraction using Regex
-Splunk may not always extract all fields automatically, so we can create manual extractions. I have demonstrated this in my [DNS Spoofing Analysis](https://github.com/elvanalandi/Home-Cybersecurity-Lab/tree/main/Splunk/DNS%20Spoofing%20Analysis) project. But, we use regex to extract fields from XML data.  
+Splunk may not always extract all fields automatically, so we can create manual extractions.  
+I have demonstrated this in my [DNS Spoofing Analysis](https://github.com/elvanalandi/Home-Cybersecurity-Lab/tree/main/Splunk/DNS%20Spoofing%20Analysis) project. But, we use regex to extract fields from XML data.  
 1. **Choose the field**  
    Select the field you want to extract, enter the Field Name, then click **Add Extraction**.  
    ![Add Extraction](images/add-extraction.png)  
