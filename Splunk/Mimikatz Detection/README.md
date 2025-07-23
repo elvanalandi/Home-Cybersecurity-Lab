@@ -126,6 +126,7 @@ To detect these behaviors, we can focus on the following patterns:
 ### Mimikatz Simulation
 > ⚠️ Warning: This simulation should only be performed in a properly isolated and controlled lab environment.  
 > I do not take any responsibility for any misuse, damage, or consequences resulting from the use of this content. Proceed at your own risk.
+  
 Mimikatz is often executed alongside other tools to increase stealth and evade detection. However, in this lab, I run it standalone to focus on detection techniques.  
 1. **Turn Off Windows Defender (Virus & Threat Protection)**  
    Search for **Firewall & network protection** using the Windows search bar.  
@@ -144,7 +145,7 @@ Mimikatz is often executed alongside other tools to increase stealth and evade d
 4. **Explore Mimikatz Commands**
    If you have a Domain Controller and Kerberos server, you can simulate attacks like DCSync and Pass-the-Ticket.  
    Since my current lab setup doesn’t include those, I’ll only demonstrate basic credential dumping commands.  
-   ![Mimikatz Basic Credentials Dumping Commands](images/creds-dump.png)
+   ![Mimikatz Basic Credentials Dumping Commands](images/creds-dump.png)  
    For more information on Mimikatz commands, this source provides some commands of [Mimikatz](https://happycamper84.medium.com/mimikatz-cheatsheet-ad2b88059b4) in details.  
 
 ### Mimikatz Detection Dashboard
@@ -154,15 +155,15 @@ Mimikatz is often executed alongside other tools to increase stealth and evade d
 2. **Create a New Dashboard**
    Fill in the **Dashboard Title** and choose the dashboard type. In this example, I’m using **Classic Dashboards**.
    ![Create New Dashboard](images/create-new-dashboard.png)
-3. **Add Time Input**
-   Add a time range picker so users can filter results dynamically.
-   Click **+ Add Input**, select **Time**, set the label to **Time**, and the Token to **time**.
+3. **Add Time Input**  
+   Add a time range picker so users can filter results dynamically.  
+   Click **+ Add Input**, select **Time**, set the label to **Time**, and the Token to **time**.  
    ![Add Input](images/add-input.png)  
 4. **Add Panel**  
    Click **+ Add Panel** and choose a panel type. I selected a **Statistics Table**, as it's already informative.  
    ![Add Panel](images/add-panel.png)  
 5. **Script Block Logging Panel (Event ID 4104)**  
-   This panel detects PowerShell-based Mimikatz activity using Event ID 4104.
+   This panel detects PowerShell-based Mimikatz activity using Event ID 4104.  
    Use the following SPL query:  
    ```
    index=* (source=WinEventLog:Microsoft-Windows-PowerShell/Operational OR source="XmlWinEventLog:Microsoft-Windows-PowerShell/Operational" OR source=WinEventLog:PowerShellCore/Operational OR source="XmlWinEventLog:PowerShellCore/Operational") EventCode=4104 | where match(ScriptBlockText, "(?i)mimikatz|-dumpcr|sekurlsa::pth|kerberos::ptt|kerberos::golden") | fillnull  | stats count min(_time) as firstTime max(_time) as lastTime values(UserID) as UserID values(ScriptBlockId) as ScriptBlockId values(EventCode) as EventCode values(Guid) as Guid values(Opcode) as Opcode values(Path) as Path values(ProcessID) as ProcessID by ScriptBlockText | eval firstTime = strftime(firstTime, "%Y-%m-%d %H:%M:%S") | eval lastTime = strftime(lastTime, "%Y-%m-%d %H:%M:%S")
