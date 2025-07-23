@@ -35,7 +35,14 @@ This project demonstrates how to ingest Windows Event Logs and Sysmon to provide
    ![Deployment Server](images/deployment.png)  
    ![Receiving Indexer](images/receiving.png)  
    Follow the prompts to complete the installation.
-
+3. **Verify SplunkForwarder Log On Settings**  
+   After installation:  
+   - Open `services.msc`  
+   - Find the **SplunkForwarder** service and double-click it  
+   - Go to the **Log On** tab and ensure **Local System account** is selected  
+     This ensures the forwarder has the necessary privileges to access system logs  
+   ![SplunkForwarder Log On Settings](images/logon.png)  
+     
 ### Configure Universal Forwarder to Collect Windows Event Logs
 1. **Locate the Universal Forwarder Folder**
    On your Windows VM, navigate to the Universal Forwarder configuration directory: `C:\Program Files\SplunkUniversalForwarder\etc\system\local`.
@@ -87,7 +94,16 @@ Sysmon enhances visibility into low-level system activity and is useful for thre
    Give the **Index Name** and **Save**.  
    ![Index Configuration](images/index-conf.png)  
    Create the `sysmon` index (and `windows` index if not already created) to match those specified in your `inputs.conf`, then click **Save**.  
-
+7. **Add Splunk Monitoring for Microsoft Windows Sysmon Events**  
+   Run the following command to configure Splunk to monitor Sysmon event logs and you will be prompted to enter your Splunk username and password:  
+   ```
+   splunk add monitor "C:\Windows\System32\winevt\Logs\Microsoft-Windows-Sysmon%4Operational.evtx"  
+   ```
+   After adding the monitor, restart the Splunk service:  
+   ```
+   splunk restart
+   ```  
+   ![Add Splunk Sysmon Monitoring](images/sysmon-monitor.png)  
 > Test the Sysmon logs using the following query in Splunk:
   
 ![Test Sysmon Logs](images/sysmon-logs.png)
