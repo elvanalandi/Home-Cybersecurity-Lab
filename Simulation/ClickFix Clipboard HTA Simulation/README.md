@@ -32,7 +32,7 @@ All detections were built using Sysmon and validated in Splunk.
 5. Attacker gains control over the victim machine.
 
 ### Setup
-:one: **Atomic Red Team**  
+#### :one: **Atomic Red Team**  
   
 This tool will be used to simulate controlled MITRE ATT&CK techniques. It offers pre-built tests to validate detection effectiveness.  
 
@@ -71,7 +71,7 @@ This tool will be used to simulate controlled MITRE ATT&CK techniques. It offers
      
    ![Install Atomic Red Team](images/art.png)
 
-**Useful Atomic Red Team Commands for Testing**
+### Useful Atomic Red Team Commands for Testing  
 Here are a few helpful commands when working with Atomic Red Team:
 - **ShowDetailsBrief**: Lists the available tests briefly. 
 - **ShowDetails**: Displays full test details, including attack commands, required input parameters, and prerequisites.
