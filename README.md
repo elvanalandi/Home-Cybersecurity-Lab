@@ -99,3 +99,11 @@ This is a collection of projects I’ve built to learn how to protect my home ne
     <a href="/Grafana/Setting%20Up%20Alerts%20for%20AD%20Issues"><strong>Setting Up Alerts for AD Issues in Grafana</strong></a>: Configured alert rules in Grafana to monitor Active Directory performance and availability using Prometheus data, enabling prompt notification of issues.
   </li>
 </ul>
+
+<h3>Attack Simulations</h3>
+<p>Simulating real-world adversary techniques to build and validate behavior-based detections using Sysmon and Splunk.</p>
+<ul>
+  <li>
+    <a href="/Simulation/ClickFix%20Clipboard%20HTA%20Simulation"><strong>ClickFix Attack Chain Simulation</strong></a>: End-to-end simulation of a ClickFix attack chain involving clipboard staging, Run dialog execution (RunMRU), and mshta-based payload execution with multi-stage correlation detection.
+  </li>
+</ul>
