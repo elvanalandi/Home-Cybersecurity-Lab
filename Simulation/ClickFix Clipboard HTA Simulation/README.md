@@ -121,3 +121,42 @@ Sliver is the core tool in this simulation, I couldn't make the attack realistic
    ![Activate Beacon](images/activate-beacon.png)
 
 #### :three: **Custom HTA Script**  
+![Custom HTA Script](images/hta-script.png)
+  
+This HTA file simulates a ClickFix-style execution chain. It demonstrates how `mshta.exe` can be abused to download and execute a payload using built-in Windows components.
+  
+**How It Works**:
+1. The file will be executed via mshta.exe, allowing VBScript to run outside browser restrictions.
+2. Using WScript.Shell to run commands and FileSystemObject to write files to disk.
+3. Define the path for **beacon.exe** in the temporary folder (specified by **GetSpecialFolder(2)**).
+4. `powershell -w hidden -nop -c` spawns powershell in hidden mode.
+5. Download the payload using Net.WebClient.
+6. `Start-Process` will execute the file from temporary folder.
+  
+**Execution Chain**:  
+`mshta.exe ➡️ powershell.exe ➡️ beacon.exe`  
+  
+Now, we have two files ready to launch.  
+  
+![Scripts](images/scripts.png)  
+
+#### :four: **AutoHotkey - Clipboard Simulation**  
+AutoHotkey was used to simulate automated clipboard injection as part of the ClickFix execution chain.  
+1. Download AutoHotkey from the official website:  
+   `https://www.autohotkey.com/`.  
+2. Launch **AutoHotkey Dash**, select **New Script**, and give a file name.  
+     
+   ![AutoHotkey Dash](images/ahk-dash.png)  
+     
+   ![Create AHK Script](images/ahk-creation.png)  
+     
+3. Create and configure the script to simulate clipboard manipulation behavior required for the lab scenario.
+     
+   ![AutoHotkey Script](images/ahk-script.png)  
+  
+4. Compile `.ahk` file into an executable (`.exe`) to enable execution within the controlled lab environment.
+  
+   ![Compile .ahk to .exe](images/compile-ahk.png)
+     
+#### :five: **Custom Atomic Red Team script**  
+I created a custom test in Atomic Red Team to simulate the HTA ClickFix-style attack chain, ensuring the test executes according to the intended behavior.   
