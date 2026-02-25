@@ -185,6 +185,20 @@ The Cleanup section will clean everything after the test.
 `Invoke-AtomicTest T1204.002 -Cleanup`  
   
 #### :six: **Sysmon Configuration**  
-Before executing the test, the Sysmon configuration was updated to ensure all relevant events is captured. This ensures full visibility of the simulated attack chain for detection validation.  
+Before running the simulation, the Sysmon configuration was updated to ensure all relevant events were captured. Proper logging is necessary to gain full visibility into each stage of the attack chain..  
+
+**Clipboard Monitoring (Event ID 24)**  
+Clipboard monitoring was enabled to detect when a process modifies clipboard content.  
+This is important because ClickFix-style attacks rely on copying malicious commands before execution.  
+  
+![Clipboard Change](images/clipboard-change.png)  
+
+**RunMRU Registry Monitoring (Event ID 13)**  
+The RunMRU registry path was added under the **RegistryEvent** rule to detect commands executed via the Windows Run dialog.  
+It’s better to use the full RunMRU registry path instead of just matching the word "RunMRU", as this helps reduce noise.  
+However, in this lab environment, I used a simple `RunMRU` string match since the configuration was designed specifically for simulation.  
+  
+![RunMRU Registry Event](images/runmru.png)  
+
 
 
