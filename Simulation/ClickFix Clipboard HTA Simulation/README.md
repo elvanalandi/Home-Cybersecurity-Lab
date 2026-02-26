@@ -9,7 +9,8 @@ The objective was to design a behavior-based detection capable of identifying:
 - Multi-stage attack correlation
 
 All detections were built using Sysmon and validated in Splunk.  
-
+  
+  
 ### Lab Architecture
 **Victim VM**
 - Windows 10 VM
@@ -24,6 +25,7 @@ All detections were built using Sysmon and validated in Splunk.
 **SIEM**
 - Splunk for ingesting logs and detection
 
+  
 ### ClickFix Attack Chain (Expected Behavior).
 1. Malicious command is copied to the clipboard.
 2. Opens Run dialog (`Win + R`).
@@ -31,6 +33,7 @@ All detections were built using Sysmon and validated in Splunk.
 4. `mshta.exe executes the malicious payload.
 5. Attacker gains control over the victim machine.
 
+  
 ### Setup
 #### :one: **Atomic Red Team**  
   
@@ -71,7 +74,7 @@ This tool will be used to simulate controlled MITRE ATT&CK techniques. It offers
      
    ![Install Atomic Red Team](images/art.png)
 
-### Useful Atomic Red Team Commands for Testing  
+#### Useful Atomic Red Team Commands for Testing  
 Here are a few helpful commands when working with Atomic Red Team:
 - **ShowDetailsBrief**: Lists the available tests briefly. 
 - **ShowDetails**: Displays full test details, including attack commands, required input parameters, and prerequisites.
@@ -199,6 +202,82 @@ It’s better to use the full RunMRU registry path instead of just matching the 
 However, in this lab environment, I used a simple `RunMRU` string match since the configuration was designed specifically for simulation.  
   
 ![RunMRU Registry Event](images/runmru.png)  
+  
+  
+### **Testing Phase**  
+Before executing the simulation, the HTTP server must be running so the victim machine can retrieve the HTA payload. For this lab, I used a simple Python HTTP server on port **8000** to host the malicious file.  
 
+![Simple HTTP Server](images/http-server.png)  
 
+Next, I verified that the custom Atomic test was properly loaded using the `ShowDetailsBrief` option in `Invoke-AtomicTest`. The newly created test was assigned test number 14 under T1204.002.  
+
+![AtomicRedTeam New Test](images/new-test.png)  
+
+To execute the simulation:  
+```
+Invoke-AtomicTest T1204.002 -TestNumbers 14
+```
+> ℹ️ Note: Antivirus protection must be temporarily disabled in the lab environment, as it may block the HTA execution or Sliver payload.  
+
+![Execute Test](images/execute-test.png)  
+
+If the following warning appears, it indicates that antivirus protection is still active and preventing execution. Disable it and rerun the test.  
+
+![Antivirus Block Message](images/antivirus.png)  
+
+Once executed successfully, the HTML Application (HTA) is launched on the victim machine, simulating the ClickFix execution flow.  
+
+![HTA](images/hta.png)  
+
+At the same time, the HTTP server logs an incoming request from the victim host, confirming that the payload was successfully retrieved.  
+
+![Downloaded Payload](images/downloaded-payload.png)  
+
+Finally, the Sliver C2 server receives a connection from the victim system, establishing a session.  
+  
+To validate access, I simply executed `whoami` command, which confirmed the user and hostname.  
+
+![C2 Server Access](images/c2-access.png)  
+  
+  
+### **Detection**  
+This simulation focuses on three key behaviors:  
+- Clipboard activity
+- RunMRU registry modification
+- `mshta.exe` execution
+  
+#### :one: **Clipboard Change (Sysmon Event ID 24)**  
+In this lab, I searched for `powershell.exe` because the clipboard activity was generated through AutoHotkey automation, which caused PowerShell to write to the clipboard.  
+If the user performed the copy-paste manually, the event would likely show `explorer.exe` instead.  
+The `Archived` field indicates that Windows stored the clipboard content.  
+    
+![Clipboard Change Detection](images/clipboard-change-detection.png)  
+
+#### :two: **RunMRU Monitoring (Sysmon Event ID 13)**  
+To detect activity through the Windows Run dialog, I monitored the RunMRU registry path.  
+
+When a command is executed via Win + R, it is recorded under:  
+`HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU`  
+  
+By filtering for this registry path as the `TargetObject`, we can see the malicious command being written before execution.  
+  
+![RunMRU Monitoring](images/runmru-monitoring.png)  
+
+#### :three: **mshta.exe Execution (Sysmon Event ID 1)**  
+The malicious command ultimately launches `mshta.exe` to execute the remote HTA payload.  
+Since it was triggered through the Run dialog, the parent process appears as `explorer.exe`. Monitoring for:  
+- Image = mshta.exe
+- ParentImage = explorer.exe
+helps identify suspicious execution.  
+
+![Mshta](images/mshta.png)  
+
+After execution, the payload downloads additional files. These are commonly stored in the **Temp folder** as attackers prefer locations that are easy to clean up and less likely to draw attention.  
+
+![Malicious File](images/malicious-file.png)  
+
+#### :four: **Track the Full Attack Flow**  
+Finally, I combined all three detections into a single correlated search to reconstruct the full attack chain. By correlating the attack chain events, we can detect the entire ClickFix-style execution flow rather than relying on a single indicator.  
+  
+![Final Detection](images/final-detection.png)  
 
