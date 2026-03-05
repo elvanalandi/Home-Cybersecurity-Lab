@@ -281,3 +281,49 @@ Finally, I combined all three detections into a single correlated search to reco
   
 ![Final Detection](images/final-detection.png)  
 
+### MITRE ATT&CK Mapping
+This simulation demonstrates a ClickFix-style social engineering attack where the victim is tricked into executing a malicious command.  
+<table>
+  <tr>
+    <td><strong>Stage</strong></td>
+    <td><strong>Technique</strong></td>
+    <td><strong>Description</strong></td>
+  </tr>
+  <tr>
+    <td>Social Engineering</td>
+    <td>T1566 - Phishing</td>
+    <td>The victim is tricked into copying a malicious command to the clipboard through a fake instruction prompt.</td>
+  </tr>
+  <tr>
+    <td>User Execution</td>
+    <td>T1204.002 – User Execution: Malicious File</td>
+    <td>Victim executes the command through the Run dialog</td>
+  </tr>
+  <tr>
+    <td>System Binary Proxy Execution</td>
+    <td>T1218.005 - Mshta</td>
+    <td>`mshta.exe` is abused to run the malicious HTA file</td>
+  </tr>
+  <tr>
+    <td>Command & Control</td>
+    <td>T1071.001 - Application Layer Protocol: Web Protocols</td>
+    <td>Payload communicates with the Sliver C2 server over HTTP</td>
+  </tr>
+</table>  
+  
+### Lessons Learned
+**1. Social Engineering Can Be Very Effective**  
+  ClickFix attacks rely on tricking the user into running a command themselves, which makes the activity appear legitimate. In this simulation, Windows Defender in active mode can detect the malicious payload and displayed a warning because a simple payload was used for demonstration purposes. However, in real scenarios, victims may ignore the warning and let the malware run by clicking “Yes”. *This highlights the importance of strong cybersecurity awareness and user education*.  
+
+**2. Living-off-the-Land Binaries Are Commonly Abused**  
+  Tools like `mshta.exe` are built into Windows and can be abused to execute malicious scripts. 
+
+**3. Single Indicators Are Not Enough**  
+  Detecting only `mshta.exe` is not reliable. *Correlating multiple behaviors* (clipboard activity, RunMRU modification, and process execution) provides much stronger detection.
+
+**4. Attack Simulation Improves Detection Engineering**  
+  Using frameworks like *Atomic Red Team allows defenders to safely simulate real attack techniques and validate* their monitoring and detection capabilities.  
+    
+**5. Understanding How Telemetry Is Logged**  
+   Sysmon logged `powershell.exe` as the process responsible for the clipboard activity instead of `explorer.exe`. This happens because *Sysmon records the process that actually invokes the clipboard API (not the visible GUI interaction)*.  
+
