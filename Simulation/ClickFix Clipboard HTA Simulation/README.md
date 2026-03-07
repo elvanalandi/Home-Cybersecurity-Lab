@@ -108,7 +108,7 @@ And here’s what the detailed test info looks like when using **ShowDetails**.
   
 Sliver is the core tool in this simulation, I couldn't make the attack realistically without it.  
   
-:exclamation: **Warning:** Use Sliver only in a controlled, isolated environment, as it is a potentially dangerous tool.  
+:exclamation: **Warning:** Use Sliver for educational purposes and in a controlled, isolated lab environment. Unauthorized use against systems you do not own is illegal.  
 
 **Sliver C2 Server Setup**  
 1. Run the following command to start the Sliver server: `sliver-server`.
