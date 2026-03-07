@@ -1,4 +1,4 @@
-## ClickFix Detection Lab – From Execution to Logs
+## Adversary Simulation of a ClickFix-Style Attack Chain via HTA and RunMRU Abuse with Splunk Detection
 ### Table of Contents
 - [Overview](#overview)  
 - [Lab Architecture](#lab-architecture)  
@@ -28,7 +28,7 @@ All detections were built using Sysmon and validated in Splunk.
 - Windows 10 VM
 - Sysmon configured with ClipboardChange (Event ID 24)
 - Atomic Red Team
-- AutoHotkey for realistic interaction simulation
+- AutoHotkey for interaction simulation
 
 **Attacker**
 - Kali Linux
