@@ -1,4 +1,16 @@
 ## ClickFix Detection Lab – From Execution to Logs
+### Table of Contents
+- [Overview](#overview)  
+- [Lab Architecture](#lab-architecture)  
+- [ClickFix Attack Chain](#clickfix-attack-chain)  
+- [Simulation Setup](#simulation-setup)
+- [Testing](#testing-phase)
+- [Detection](#detection)
+- [MITRE ATT&CK Mapping](#mitre-attck-mapping)
+- [Lessons Learned](#lessons-learned)
+- [References](#references)
+
+  
 ### Overview  
 This lab simulates a ClickFix attack chain where clipboard content is staged to trick the user into executing a malicious command through the Windows Run dialog.
 
@@ -9,7 +21,7 @@ The objective was to design a behavior-based detection capable of identifying:
 - Multi-stage attack correlation
 
 All detections were built using Sysmon and validated in Splunk.  
-  
+
   
 ### Lab Architecture
 **Victim VM**
@@ -26,7 +38,7 @@ All detections were built using Sysmon and validated in Splunk.
 - Splunk for ingesting logs and detection
 
   
-### ClickFix Attack Chain (Expected Behavior).
+### ClickFix Attack Chain
 1. Malicious command is copied to the clipboard.
 2. Opens Run dialog (`Win + R`).
 3. Clipboard content is automatically pasted into the Run dialog.
@@ -34,7 +46,7 @@ All detections were built using Sysmon and validated in Splunk.
 5. Attacker gains control over the victim machine.
 
   
-### Setup
+### Simulation Setup
 #### :one: **Atomic Red Team**  
   
 This tool will be used to simulate controlled MITRE ATT&CK techniques. It offers pre-built tests to validate detection effectiveness.  
@@ -327,3 +339,14 @@ This simulation demonstrates a ClickFix-style social engineering attack where th
 **5. Understanding How Telemetry Is Logged**  
    Sysmon logged `powershell.exe` as the process responsible for the clipboard activity instead of `explorer.exe`. This happens because *Sysmon records the process that actually invokes the clipboard API (not the visible GUI interaction)*.  
 
+  
+### References
+- [ClickFix Detection using AtomicRedTeam](https://medium.com/@sujalchauhan921/defending-against-clickfix-building-real-world-behavioral-detections-using-atomic-red-team-863660eb87cb)
+- [AutoHotkey](https://www.autohotkey.com/)
+- [Atomic Red Team](https://github.com/redcanaryco/invoke-atomicredteam/wiki/Installing-Invoke-AtomicRedTeam)
+- [Atomic Red Team Threat Hunting](https://medium.com/intelforge/atomic-hunting-with-atomic-red-team-starting-your-threat-hunting-journey-fbe961379c24)
+- [Atomic Red Team ClickFix Campaign](https://www.atomicredteam.io/docs/atomics/T1204.002#atomic-test-12---clickfix-campaign---abuse-runmru-to-launch-mshta-via-powershell)
+- [HTA File Example](https://github.com/k4sth4/Malicious-HTA-File)
+- [Atomic Tests Prerequisites](https://github.com/redcanaryco/invoke-atomicredteam/wiki/Check-or-Get-Prerequisites-for-Atomic-Tests)  
+- [ClickFix Social Engineering Technique](https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/)
+- [Lumma Stealer Fake Captchas](https://www.netskope.com/blog/lumma-stealer-fake-captchas-new-techniques-to-evade-detection)
